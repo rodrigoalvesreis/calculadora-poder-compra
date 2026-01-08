@@ -1,0 +1,239 @@
+
+/* ===== Console didático ===== */
+.console {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    width: 90vw;
+    max-height: 60vh;
+    border: 1px solid #d7d7d7;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+    overflow-x: sc;
+    z-index: 1000;
+  }
+  
+  .console__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 12px;
+    background: #f5f7fb;
+    border-bottom: 1px solid #e7e7e7;
+  }
+  
+  .console__actions {
+    display: flex;
+    gap: 6px;
+  }
+  
+  .console__btn {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid #cbd4ea;
+    border-radius: 6px;
+    background: #eef3ff;
+    color: #1f3b7a;
+    cursor: pointer;
+  }
+  
+  .console__btn:hover {
+    background: #e1ebff;
+  }
+  
+  .console__body {
+    /* ocupa o restante da altura disponível */
+    padding: 12px;
+  
+    /* chave para scroll aparecer */
+    overflow: auto;                /* permite scroll interno */
+    max-height: 60vh; /* fallback se a flexbox não aplicar; ajuste 48px ~ header */
+    /* melhora o scroll em iOS */
+    -webkit-overflow-scrolling: touch;
+  
+  }
+  
+  .console__intro {
+    margin: 0 0 8px 0;
+    color: #555;
+    font-size: 0.95rem;
+  }
+  
+  .console__steps {
+    margin: 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 8px;
+  }
+  
+  .console__step {
+    background: #fafbff;
+    border: 1px solid #e8ebf7;
+    border-radius: 8px;
+    padding: 8px 10px;
+  }
+  
+  .console__step-title {
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 4px;
+  }
+  
+  .console__step-content {
+    color: #2f3133;
+    font-size: 0.95rem;
+  }
+  
+  .console__step-formula {
+    background: #0f172a; /* azul marinho */
+    color: #e5e7eb;
+    border-radius: 6px;
+    padding: 8px;
+    margin-top: 6px;
+    font-size: 0.85rem;
+    overflow: auto;
+  }
+  
+  .console__note {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #666;
+  }
+  
+  /* Estado minimizado */
+  .console--min {
+    width: auto;
+    max-height: none;
+  }
+  
+  .console--min .console__body {
+    display: none;
+  }
+  
+  .console__minimized {
+    padding: 10px 12px;
+    color: #444;
+    font-size: 0.95rem;
+  }
+  
+  /* ===== Layout geral (mantido) ===== */
+  .container {
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  }
+  
+  h1 {
+    margin-bottom: 1rem;
+  }
+  
+  form {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .field {
+    display: grid;
+    gap: 0.25rem;
+  }
+  
+  label {
+    font-weight: 600;
+  }
+  
+  input[type="text"] {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  .hint {
+    color: #666;
+    font-size: 0.85rem;
+  }
+  
+  .btn {
+    padding: 0.6rem 1rem;
+    background: #2d6cdf; /* azul */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    width: fit-content;
+  }
+  
+  .btn[disabled] {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .error {
+    color: #b00020;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  
+  .resultado h2 {
+    margin: 1rem 0;
+  }
+  
+  .grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+  
+  .card {
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    background: #fff;
+  }
+  
+  .card.highlight {
+    border-color: #2d6cdf;
+    box-shadow: 0 0 0 2px rgba(45, 108, 223, 0.15);
+  }
+  
+  .card h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .card p {
+    margin: 0.4rem 0;
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+  
+  .big {
+    font-size: 1.3rem;
+  }
+  
+  .ok {
+    color: #0a7a29;
+    font-weight: 600;
+  }
+  
+  .warn {
+    color: #b05e00;
+    font-weight: 600;
+  }
+  
+  .observacoes h3 {
+    margin-top: 1rem;
+  }
+  
+  .observacoes ul {
+    margin: 0.25rem 0 0 1.2rem;
+  }
+  
+  

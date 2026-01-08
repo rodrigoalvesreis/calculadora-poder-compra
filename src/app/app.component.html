@@ -1,0 +1,137 @@
+
+<div class="container">
+  <h1>{{ title }}</h1>
+
+  <form [formGroup]="form" (ngSubmit)="onCalcular()" novalidate>
+    <div class="field">
+      <label for="rendaMensal">Renda mensal</label>
+      <input
+        id="rendaMensal"
+        type="text"
+        formControlName="rendaMensal"
+        appCurrencyMask
+        placeholder="0,00"
+        inputmode="numeric"
+        autocomplete="off"
+      />
+      <small class="hint">Considere a renda total, sem descontos.</small>
+      <small class="error" *ngIf="form.controls.rendaMensal.invalid && form.controls.rendaMensal.touched">
+        Informe um valor maior que zero.
+      </small>
+    </div>
+
+    <div class="field">
+      <label for="entrada">Entrada + FGTS</label>
+      <input
+        id="entrada"
+        type="text"
+        formControlName="entrada"
+        appCurrencyMask
+        placeholder="0,00"
+        inputmode="numeric"
+        autocomplete="off"
+      />
+      <small class="hint">Quanto você tem disponível para entrada.</small>
+      <small class="error" *ngIf="form.controls.entrada.invalid && form.controls.entrada.touched">
+        Informe um valor maior que zero.
+      </small>
+    </div>
+
+    <button type="submit" [disabled]="carregando" class="btn">
+      {{ carregando ? 'Calculando...' : 'Calcular' }}
+    </button>
+
+    <div class="error" *ngIf="erro">{{ erro }}</div>
+  </form>
+
+  <section class="resultado" *ngIf="resultado as r">
+    <h2>Resultado</h2>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Parcela máxima</h3>
+        <p>{{ formatBRL(r.parcelaMaxima) }}</p>
+      </div>
+
+      <div class="card">
+        <h3>Valor a financiar (pela renda)</h3>
+        <p>{{ formatBRL(r.financiamentoPorRenda) }}</p>
+      </div>
+
+      <div class="card">
+        <h3>Valor a financiar (pela entrada)</h3>
+        <p>{{ formatBRL(r.financiamentoPorEntrada) }}</p>
+      </div>
+
+      <div class="card highlight">
+        <h3>Financiamento final</h3>
+        <p class="big">{{ formatBRL(r.financiamentoFinal) }}</p>
+      </div>
+
+      <div class="card">
+        <h3>Valor do imóvel (sem taxas)</h3>
+        <p>{{ formatBRL(r.valorImovel) }}</p>
+      </div>
+
+      <div class="card">
+        <h3>Entrada mínima necessária</h3>
+        <p>{{ formatBRL(r.entradaNecessariaMinima) }}</p>
+        <p [class.ok]="r.entradaSuficiente" [class.warn]="!r.entradaSuficiente">
+          {{ r.entradaSuficiente ? 'Entrada suficiente' : 'Entrada insuficiente' }}
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>ITBI e outras taxas (estimado)</h3>
+        <p>{{ formatBRL(r.taxasEstimadas) }}</p>
+        <small>Estimado em 5% do valor do imóvel.</small>
+      </div>
+    </div>
+
+    <div class="observacoes">
+      <h3>Observações</h3>
+      <ul>
+        <li *ngFor="let obs of r.observacoes">{{ obs }}</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<!-- ========================= -->
+<!-- Console didático flutuante -->
+<!-- ========================= -->
+<div class="console" [class.console--min]="!consoleOpen" aria-live="polite">
+  <div class="console__header">
+    <strong>Console do cálculo</strong>
+    <div class="console__actions">
+      <button type="button" class="console__btn" (click)="toggleConsole()">
+        {{ consoleOpen ? 'Minimizar' : 'Expandir' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="console__body" *ngIf="consoleOpen; else minimized">
+    <p class="console__intro">
+      Este console mostra, passo a passo, como o cálculo foi realizado, com fórmulas e valores.
+    </p>
+
+    <ol class="console__steps">
+      <li class="console__step" *ngFor="let s of consoleSteps">
+        <div class="console__step-title">{{ s.titulo }}</div>
+        <div class="console__step-content">{{ s.conteudo }}</div>
+        <pre class="console__step-formula" *ngIf="s.formula"><code>{{ s.formula }}</code></pre>
+      </li>
+    </ol>
+
+    <p class="console__note">
+      Nota: valores e percentuais são estimativas usuais de mercado (ex.: parcela ≤ 30% da renda, entrada mínima 20%, taxas ≈ 5%).
+      Ajuste os parâmetros conforme sua política de crédito.
+    </p>
+  </div>
+
+  <ng-template #minimized>
+    <div class="console__minimized">
+      <span>Console do cálculo (minimizado)</span>
+    </div>
+  </ng-template>
+</div>
