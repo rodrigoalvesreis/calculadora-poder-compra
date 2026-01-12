@@ -83,6 +83,8 @@
       <p class="panel__value">
         {{ formatBRL(r.valorImovel) }}<span class="asterisk">*</span>
       </p>
+      <p class="panel__subnote">Prestação sugerida: {{ formatBRL(r.prestacaoSugerida || r.parcelaMaxima) }} *
+      </p>
       <p class="panel__subnote">O valor é dividido em:</p>
 
       <!-- Barra segmentada (Entrada | Financiamento | Taxas) -->
@@ -138,7 +140,8 @@
       <!-- Rodapé / Observação -->
       <div class="panel__footer">
         <small class="note">
-          * Valor do imóvel sem considerar ITBI e outras taxas. Percentual estimado aplicado ao valor do imóvel.
+          * Valor do imóvel sem considerar ITBI e outras taxas. Percentual estimado reaplicado ao valor do imóvel neste cenário.<br/>
+          * A Prestação sugerida foi calculada de acordo com a tabela price, para uma taxa de {{ formatPct(params.taxaAnual) }} a.a. e prazo de {{ params.prazoAnos }} anos.
         </small>
       </div>
     </div>
@@ -160,6 +163,8 @@
         <p class="panel__value">
           {{ formatBRL(valorImovelRenda) }}<span class="asterisk">*</span>
         </p>
+       <p class="panel__subnote">Prestação sugerida (máximo pela renda): {{ formatBRL(r.parcelaMaxima) }} *
+       </p>
         <p class="panel__subnote">O valor é dividido em:</p>
 
         <!-- Percentual de taxas reaproveitado do resultado atual -->
@@ -199,6 +204,7 @@
                 <div class="legend__text">
                   <div class="legend__label">Valor a financiar (pela renda)</div>
                   <div class="legend__value">{{ formatBRL(r.financiamentoPorRenda) }}</div>
+                  
                 </div>
               </div>
 
@@ -217,7 +223,8 @@
             <!-- Rodapé / Observação -->
             <div class="panel__footer">
               <small class="note">
-                * Valor do imóvel sem considerar ITBI e outras taxas. Percentual estimado reaplicado ao valor do imóvel neste cenário.
+                * Valor do imóvel sem considerar ITBI e outras taxas. Percentual estimado reaplicado ao valor do imóvel neste cenário.<br/>
+                * A Prestação sugerida foi calculada de acordo com a tabela price, para uma taxa de {{ formatPct(params.taxaAnual) }} a.a. e prazo de {{ params.prazoAnos }} anos.
               </small>
             </div>
           </ng-container>

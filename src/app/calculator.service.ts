@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 
 export interface CalculoResultado {
   parcelaMaxima: number;
+  prestacaoSugerida?: number;
   financiamentoPorRenda: number;
   financiamentoPorEntrada: number;
   financiamentoFinal: number;
@@ -82,6 +83,16 @@ export class CalculatorService {
     // 8) ITBI e taxas
     const taxasEstimadas = percTaxas * valorImovel;
 
+    // 9) Prestação sugerida (mensal) para o financiamento final (Tabela Price)
+    let prestacaoSugerida = 0;
+    if (financiamentoFinal > 0) {
+      if (taxaMensal > 0) {
+        const fator = Math.pow(1 + taxaMensal, nMeses);
+        prestacaoSugerida = financiamentoFinal * (taxaMensal * fator) / (fator - 1);
+      } else {
+        prestacaoSugerida = financiamentoFinal / nMeses;
+      }
+    }
     // Observações
     observacoes.push(
       entradaSuficiente
@@ -94,6 +105,7 @@ export class CalculatorService {
 
     return {
       parcelaMaxima,
+      prestacaoSugerida: this.round2(prestacaoSugerida),
       financiamentoPorRenda,
       financiamentoPorEntrada,
       financiamentoFinal,
