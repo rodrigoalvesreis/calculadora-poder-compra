@@ -29,8 +29,8 @@ export class AppComponent {
 
   // Parâmetros padrão (você pode futuramente expor isso na UI)
   readonly params = {
-    taxaAnual: 0.10,       // 10% a.a.
-    prazoAnos: 30,          // 30 anos
+    taxaAnual: 0.095,       // 9,5% a.a.
+    prazoAnos: 35,          // 35 anos
     comprometimento: 0.30,  // 30% da renda
     percEntradaMin: 0.20,   // 20% do valor do imóvel
     percTaxas: 0.05,        // 5% ITBI + taxas
