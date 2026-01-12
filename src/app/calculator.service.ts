@@ -25,13 +25,13 @@ export interface CalculoOpts {
 @Injectable({ providedIn: 'root' })
 export class CalculatorService {
   calcularPoderDeCompra(rendaMensalBRL: number, entradaBRL: number, opts: CalculoOpts = {}): CalculoResultado {
-    const {
-      taxaAnual = 0.115,       // 11,5% a.a. (ajuste conforme cenário)
-      prazoAnos = 35,          // 35 anos
-      comprometimento = 0.30,  // 30% da renda
-      percEntradaMin = 0.20,   // 20% de entrada
-      percTaxas = 0.05         // 5% para ITBI e taxas
-    } = opts;
+  
+    var taxaAnual = 0.095  ;       // 9,5% a.a. (ajuste conforme cenário)
+     var prazoAnos = 35;          // 35 anos
+     var comprometimento = 0.30;  // 30% da renda
+     var percEntradaMin = 0.20;  // 20% de entrada
+     var percTaxas = 0.05;         // 5% para ITBI e taxas
+    
 
     const observacoes: string[] = [];
 
@@ -75,8 +75,9 @@ export class CalculatorService {
     const valorImovel = entradaBRL + financiamentoFinal;
 
     // 7) Entrada mínima necessária para aproveitar todo crédito pela renda
-    const entradaNecessariaMinima = percEntradaMin * (entradaBRL + financiamentoPorRenda);
-    const entradaSuficiente = entradaBRL >= entradaNecessariaMinima - 1e-6;
+    var divisor = (1 - percEntradaMin) * 10; 
+    const entradaNecessariaMinima = percEntradaMin * ((financiamentoPorRenda/divisor * 10));
+    const entradaSuficiente = this.round2(entradaBRL - entradaNecessariaMinima) >= 0;
 
     // 8) ITBI e taxas
     const taxasEstimadas = percTaxas * valorImovel;
@@ -104,6 +105,10 @@ export class CalculatorService {
     };
   }
 
+  round2(n: number): number {
+    return Math.round(n * 100) / 100;
+  }
+  
   /** Converte string BRL ("R$ 1.234,56") para número 1234.56 */
   parseBRL(input: string | number): number {
     if (typeof input === 'number') return input;

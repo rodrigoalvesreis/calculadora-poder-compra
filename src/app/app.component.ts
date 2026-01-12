@@ -19,6 +19,9 @@ export class AppComponent {
   resultado?: CalculoResultado;
   erro?: string;
   carregando = false;
+  
+  activeTab: 'potencial' | 'renda' = 'potencial';
+
 
   // Console didático
   consoleOpen = false;

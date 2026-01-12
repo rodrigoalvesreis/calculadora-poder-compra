@@ -2,7 +2,8 @@
 <div class="container">
   <h1>{{ title }}</h1>
 
-  <form [formGroup]="form" (ngSubmit)="onCalcular()" novalidate>
+  <!-- Formulário -->
+  <form [formGroup]="form" (ngSubmit)="onCalcular()" novalidate class="form">
     <div class="field">
       <label for="rendaMensal">Renda mensal</label>
       <input
@@ -13,6 +14,7 @@
         placeholder="0,00"
         inputmode="numeric"
         autocomplete="off"
+        aria-label="Informe sua renda mensal"
       />
       <small class="hint">Considere a renda total, sem descontos.</small>
       <small class="error" *ngIf="form.controls.rendaMensal.invalid && form.controls.rendaMensal.touched">
@@ -30,6 +32,7 @@
         placeholder="0,00"
         inputmode="numeric"
         autocomplete="off"
+        aria-label="Informe o valor disponível para entrada"
       />
       <small class="hint">Quanto você tem disponível para entrada.</small>
       <small class="error" *ngIf="form.controls.entrada.invalid && form.controls.entrada.touched">
@@ -38,100 +41,193 @@
     </div>
 
     <button type="submit" [disabled]="carregando" class="btn">
-      {{ carregando ? 'Calculando...' : 'Calcular' }}
+      <span class="btn__label">{{ carregando ? 'Calculando...' : 'Calcular' }}</span>
+      <span class="btn__spinner" *ngIf="carregando" aria-hidden="true"></span>
     </button>
 
-    <div class="error" *ngIf="erro">{{ erro }}</div>
+    <div class="error form-error" *ngIf="erro">{{ erro }}</div>
   </form>
 
+  <!-- Resultado -->
   <section class="resultado" *ngIf="resultado as r">
-    <h2>Resultado</h2>
-
-    <div class="grid">
-      <div class="card">
-        <h3>Parcela máxima</h3>
-        <p>{{ formatBRL(r.parcelaMaxima) }}</p>
-      </div>
-
-      <div class="card">
-        <h3>Valor a financiar (pela renda)</h3>
-        <p>{{ formatBRL(r.financiamentoPorRenda) }}</p>
-      </div>
-
-      <div class="card">
-        <h3>Valor a financiar (pela entrada)</h3>
-        <p>{{ formatBRL(r.financiamentoPorEntrada) }}</p>
-      </div>
-
-      <div class="card highlight">
-        <h3>Financiamento final</h3>
-        <p class="big">{{ formatBRL(r.financiamentoFinal) }}</p>
-      </div>
-
-      <div class="card">
-        <h3>Valor do imóvel (sem taxas)</h3>
-        <p>{{ formatBRL(r.valorImovel) }}</p>
-      </div>
-
-      <div class="card">
-        <h3>Entrada mínima necessária</h3>
-        <p>{{ formatBRL(r.entradaNecessariaMinima) }}</p>
-        <p [class.ok]="r.entradaSuficiente" [class.warn]="!r.entradaSuficiente">
-          {{ r.entradaSuficiente ? 'Entrada suficiente' : 'Entrada insuficiente' }}
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>ITBI e outras taxas (estimado)</h3>
-        <p>{{ formatBRL(r.taxasEstimadas) }}</p>
-        <small>Estimado em 5% do valor do imóvel.</small>
-      </div>
-    </div>
-
-    <div class="observacoes">
-      <h3>Observações</h3>
-      <ul>
-        <li *ngFor="let obs of r.observacoes">{{ obs }}</li>
-      </ul>
-    </div>
-  </section>
-</div>
-
-<!-- ========================= -->
-<!-- Console didático flutuante -->
-<!-- ========================= -->
-<div class="console" [class.console--min]="!consoleOpen" aria-live="polite">
-  <div class="console__header">
-    <strong>Console do cálculo</strong>
-    <div class="console__actions">
-      <button type="button" class="console__btn" (click)="toggleConsole()">
-        {{ consoleOpen ? 'Minimizar' : 'Expandir' }}
+    <!-- Tabs -->
+    <div class="tabs" role="tablist" aria-label="Abas de resultado">
+      <button
+        class="tabs__tab"
+        [class.tabs__tab--active]="activeTab === 'potencial'"
+        (click)="activeTab = 'potencial'"
+        role="tab"
+        [attr.aria-selected]="activeTab === 'potencial'"
+      >
+        Potencial
+      </button>
+      <button
+        class="tabs__tab"
+        [class.tabs__tab--active]="activeTab === 'renda'"
+        (click)="activeTab = 'renda'"
+        role="tab"
+        [attr.aria-selected]="activeTab === 'renda'"
+      >
+        Máximo possível para a renda
       </button>
     </div>
-  </div>
 
-  <div class="console__body" *ngIf="consoleOpen; else minimized">
-    <p class="console__intro">
-      Este console mostra, passo a passo, como o cálculo foi realizado, com fórmulas e valores.
-    </p>
+    <!-- Painel: Potencial -->
+    <div
+      class="panel"
+      *ngIf="activeTab === 'potencial'"
+      role="tabpanel"
+      aria-label="Painel potencial"
+    >
+      <p class="panel__subtitle">Seu potencial de compra é de um imóvel de até</p>
+      <p class="panel__value">
+        {{ formatBRL(r.valorImovel) }}<span class="asterisk">*</span>
+      </p>
+      <p class="panel__subnote">O valor é dividido em:</p>
 
-    <ol class="console__steps">
-      <li class="console__step" *ngFor="let s of consoleSteps">
-        <div class="console__step-title">{{ s.titulo }}</div>
-        <div class="console__step-content">{{ s.conteudo }}</div>
-        <pre class="console__step-formula" *ngIf="s.formula"><code>{{ s.formula }}</code></pre>
-      </li>
-    </ol>
+      <!-- Barra segmentada (Entrada | Financiamento | Taxas) -->
+      <div class="bar" aria-label="Distribuição de valores">
+        <!-- Entrada atual = valorImovel - financiamentoFinal -->
+        <span
+          class="bar__segment bar__segment--entrada"
+          [style.flex]="(r.valorImovel - r.financiamentoFinal)"
+          title="Entrada"
+        ></span>
+        <span
+          class="bar__segment bar__segment--financiamento"
+          [style.flex]="r.financiamentoFinal"
+          title="Valor a financiar"
+        ></span>
+        <span
+          class="bar__segment bar__segment--taxas"
+          [style.flex]="r.taxasEstimadas"
+          title="ITBI e taxas"
+        ></span>
+      </div>
 
-    <p class="console__note">
-      Nota: valores e percentuais são estimativas usuais de mercado (ex.: parcela ≤ 30% da renda, entrada mínima 20%, taxas ≈ 5%).
-      Ajuste os parâmetros conforme sua política de crédito.
-    </p>
-  </div>
+      <!-- Legenda -->
+      <div class="legend">
+        <div class="legend__item">
+          <span class="legend__dot legend__dot--entrada"></span>
+          <div class="legend__text">
+            <div class="legend__label">Entrada</div>
+            <div class="legend__value">{{ formatBRL(r.valorImovel - r.financiamentoFinal) }}</div>
+          </div>
+        </div>
 
-  <ng-template #minimized>
-    <div class="console__minimized">
-      <span>Console do cálculo (minimizado)</span>
+        <div class="legend__item">
+          <span class="legend__dot legend__dot--financiamento"></span>
+          <div class="legend__text">
+            <div class="legend__label">Valor a financiar</div>
+            <div class="legend__value">{{ formatBRL(r.financiamentoFinal) }}</div>
+          </div>
+        </div>
+
+        <div class="legend__item">
+          <span class="legend__dot legend__dot--taxas"></span>
+          <div class="legend__text">
+            <div class="legend__label">
+              ITBI e outras taxas
+              <span class="legend__info" aria-label="Informações sobre taxas">i</span>
+            </div>
+            <div class="legend__value">{{ formatBRL(r.taxasEstimadas) }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rodapé / Observação -->
+      <div class="panel__footer">
+        <small class="note">
+          * Valor do imóvel sem considerar ITBI e outras taxas. Percentual estimado aplicado ao valor do imóvel.
+        </small>
+      </div>
     </div>
-  </ng-template>
+
+    <!-- Painel: Máximo possível para a renda -->
+    <div
+      class="panel"
+      *ngIf="activeTab === 'renda'"
+      role="tabpanel"
+      aria-label="Painel máximo possível para a renda"
+    >
+      <ng-container
+        *ngIf="
+          (r.entradaNecessariaMinima + r.financiamentoPorRenda) as valorImovelRenda;
+          else rendaFallback
+        "
+      >
+        <p class="panel__subtitle">Com entrada mínima suficiente, seu imóvel pode ser de até</p>
+        <p class="panel__value">
+          {{ formatBRL(valorImovelRenda) }}<span class="asterisk">*</span>
+        </p>
+        <p class="panel__subnote">O valor é dividido em:</p>
+
+        <!-- Percentual de taxas reaproveitado do resultado atual -->
+        <ng-container *ngIf="(r.taxasEstimadas / r.valorImovel) as taxaPerc">
+          <ng-container *ngIf="(taxaPerc * valorImovelRenda) as taxasRenda">
+            <!-- Barra segmentada (Entrada mínima | Financiamento por renda | Taxas) -->
+            <div class="bar" aria-label="Distribuição de valores">
+              <span
+                class="bar__segment bar__segment--entrada"
+                [style.flex]="r.entradaNecessariaMinima"
+                title="Entrada mínima necessária"
+              ></span>
+              <span
+                class="bar__segment bar__segment--financiamento"
+                [style.flex]="r.financiamentoPorRenda"
+                title="Valor a financiar pela renda"
+              ></span>
+              <span
+                class="bar__segment bar__segment--taxas"
+                [style.flex]="taxasRenda"
+                title="ITBI e taxas"
+              ></span>
+            </div>
+
+            <!-- Legenda -->
+            <div class="legend">
+              <div class="legend__item">
+                <span class="legend__dot legend__dot--entrada"></span>
+                <div class="legend__text">
+                  <div class="legend__label">Entrada mínima necessária</div>
+                  <div class="legend__value">{{ formatBRL(r.entradaNecessariaMinima) }}</div>
+                </div>
+              </div>
+
+              <div class="legend__item">
+                <span class="legend__dot legend__dot--financiamento"></span>
+                <div class="legend__text">
+                  <div class="legend__label">Valor a financiar (pela renda)</div>
+                  <div class="legend__value">{{ formatBRL(r.financiamentoPorRenda) }}</div>
+                </div>
+              </div>
+
+              <div class="legend__item">
+                <span class="legend__dot legend__dot--taxas"></span>
+                <div class="legend__text">
+                  <div class="legend__label">
+                    ITBI e outras taxas
+                    <span class="legend__info" aria-label="Informações sobre taxas">i</span>
+                  </div>
+                  <div class="legend__value">{{ formatBRL(taxasRenda) }}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rodapé / Observação -->
+            <div class="panel__footer">
+              <small class="note">
+                * Valor do imóvel sem considerar ITBI e outras taxas. Percentual estimado reaplicado ao valor do imóvel neste cenário.
+              </small>
+            </div>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <ng-template #rendaFallback>
+        <p class="panel__subtitle">Cenário pela renda</p>
+        <p class="panel__value">{{ formatBRL(r.entradaNecessariaMinima + r.financiamentoPorRenda) }}</p>
+      </ng-template>
+    </div>
+  </section>
 </div>

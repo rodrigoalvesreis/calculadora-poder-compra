@@ -1,239 +1,272 @@
+/* Container e tipografia básica */
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 1.25rem;
+  font-family: Poppins,Arial,Helvetica,sans-serif
+}
 
-/* ===== Console didático ===== */
-.console {
-    position: fixed;
-    right: 16px;
-    bottom: 16px;
-    width: 90vw;
-    max-height: 60vh;
-    border: 1px solid #d7d7d7;
-    border-radius: 10px;
-    background: #fff;
-    box-shadow: 0 10px 24px rgba(0,0,0,0.12);
-    overflow-x: sc;
-    z-index: 1000;
+input{
+  max-width: 230px;
+}
+
+h1 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Formulário */
+.form {
+  display: flex;
+  gap: 20px;  
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.field label {
+  font-weight: 600;
+}
+
+.field input[type='text'] {
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  padding: 0.55rem 0.7rem;
+  font-size: 1rem;
+}
+
+.hint {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.error {
+  color: #d9534f;
+  font-size: 0.85rem;
+}
+
+.form-error {
+  grid-column: 1 / -1;
+}
+
+.btn {
+  position: relative;
+  height: 40px;
+  padding: 0 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #5e2bd6; /* roxo principal */
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 24px;
+}
+
+.btn[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn__spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-top-color: #fff;
+  border-radius: 50%;
+  margin-left: 8px;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
-  
-  .console__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 10px 12px;
-    background: #f5f7fb;
-    border-bottom: 1px solid #e7e7e7;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid #eee;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.tabs__tab {
+  background: transparent;
+  border: none;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+}
+
+.tabs__tab--active {
+  color: #2f2f2f;
+  border-bottom-color: #5e2bd6; /* roxo principal */
+}
+
+/* Painéis */
+.panel {
+  background: #f7f9fc;
+  border: 1px solid #eef1f6;
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.panel__subtitle {
+  color: #5a6170;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  text-align: center;
+}
+
+.panel__value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #2f2f2f;
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.asterisk {
+  font-size: 1.25rem;
+  vertical-align: super;
+  margin-left: 4px;
+  color: #8a8f9b;
+}
+
+.panel__subnote {
+  color: #8a8f9b;
+  text-align: center;
+  margin-bottom: 0.9rem;
+}
+
+/* Barra segmentada */
+.bar {
+  display: flex;
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 0.5rem auto 1rem;
+  background: #e9e9ef;
+  max-width: 640px;
+}
+
+.bar__segment {
+  display: block;
+  height: 100%;
+}
+
+.bar__segment--entrada {
+  background: #ffb47e; /* laranja suave */
+}
+
+.bar__segment--financiamento {
+  background: #5e2bd6; /* roxo principal */
+}
+
+.bar__segment--taxas {
+  background: #c5a9f2; /* roxo claro */
+}
+
+/* Legenda */
+.legend {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.legend__item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.legend__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.legend__dot--entrada {
+  background: #ffb47e;
+}
+
+.legend__dot--financiamento {
+  background: #5e2bd6;
+}
+
+.legend__dot--taxas {
+  background: #c5a9f2;
+}
+
+.legend__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.legend__label {
+  color: #5a6170;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend__info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid #858aa0;
+  color: #858aa0;
+  font-size: 12px;
+}
+
+.legend__value {
+  color: #2f2f2f;
+  font-weight: 700;
+}
+
+/* Rodapé / observação */
+.panel__footer .note {
+  display: block;
+  color: #8a8f9b;
+  text-align: center;
+  padding-top: 50px;
+}
+
+/* Responsividade */
+@media (max-width: 980px) {
+  .form {
+    grid-template-columns: 1fr 1fr;
   }
-  
-  .console__actions {
-    display: flex;
-    gap: 6px;
+}
+
+@media (max-width: 768px) {
+  .legend {
+    grid-template-columns: 1fr;
   }
-  
-  .console__btn {
-    padding: 6px 10px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    border: 1px solid #cbd4ea;
-    border-radius: 6px;
-    background: #eef3ff;
-    color: #1f3b7a;
-    cursor: pointer;
+}
+
+@media (max-width: 540px) {
+  .form {
+    grid-template-columns: 1fr;
   }
-  
-  .console__btn:hover {
-    background: #e1ebff;
-  }
-  
-  .console__body {
-    /* ocupa o restante da altura disponível */
-    padding: 12px;
-  
-    /* chave para scroll aparecer */
-    overflow: auto;                /* permite scroll interno */
-    max-height: 60vh; /* fallback se a flexbox não aplicar; ajuste 48px ~ header */
-    /* melhora o scroll em iOS */
-    -webkit-overflow-scrolling: touch;
-  
-  }
-  
-  .console__intro {
-    margin: 0 0 8px 0;
-    color: #555;
-    font-size: 0.95rem;
-  }
-  
-  .console__steps {
-    margin: 0;
-    padding-left: 18px;
-    display: grid;
-    gap: 8px;
-  }
-  
-  .console__step {
-    background: #fafbff;
-    border: 1px solid #e8ebf7;
-    border-radius: 8px;
-    padding: 8px 10px;
-  }
-  
-  .console__step-title {
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 4px;
-  }
-  
-  .console__step-content {
-    color: #2f3133;
-    font-size: 0.95rem;
-  }
-  
-  .console__step-formula {
-    background: #0f172a; /* azul marinho */
-    color: #e5e7eb;
-    border-radius: 6px;
-    padding: 8px;
-    margin-top: 6px;
-    font-size: 0.85rem;
-    overflow: auto;
-  }
-  
-  .console__note {
-    margin-top: 10px;
-    font-size: 0.85rem;
-    color: #666;
-  }
-  
-  /* Estado minimizado */
-  .console--min {
-    width: auto;
-    max-height: none;
-  }
-  
-  .console--min .console__body {
-    display: none;
-  }
-  
-  .console__minimized {
-    padding: 10px 12px;
-    color: #444;
-    font-size: 0.95rem;
-  }
-  
-  /* ===== Layout geral (mantido) ===== */
-  .container {
-    max-width: 960px;
-    margin: 2rem auto;
-    padding: 0 1rem;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  }
-  
-  h1 {
-    margin-bottom: 1rem;
-  }
-  
-  form {
-    display: grid;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .field {
-    display: grid;
-    gap: 0.25rem;
-  }
-  
-  label {
-    font-weight: 600;
-  }
-  
-  input[type="text"] {
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 1rem;
-  }
-  
-  .hint {
-    color: #666;
-    font-size: 0.85rem;
-  }
-  
+
   .btn {
-    padding: 0.6rem 1rem;
-    background: #2d6cdf; /* azul */
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    width: fit-content;
+    width: 100%;
   }
-  
-  .btn[disabled] {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-  
-  .error {
-    color: #b00020;
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
-  
-  .resultado h2 {
-    margin: 1rem 0;
-  }
-  
-  .grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  }
-  
-  .card {
-    border: 1px solid #e5e5e5;
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    background: #fff;
-  }
-  
-  .card.highlight {
-    border-color: #2d6cdf;
-    box-shadow: 0 0 0 2px rgba(45, 108, 223, 0.15);
-  }
-  
-  .card h3 {
-    margin: 0;
-    font-size: 1rem;
-    color: #333;
-  }
-  
-  .card p {
-    margin: 0.4rem 0;
-    font-weight: 600;
-    font-size: 1.05rem;
-  }
-  
-  .big {
-    font-size: 1.3rem;
-  }
-  
-  .ok {
-    color: #0a7a29;
-    font-weight: 600;
-  }
-  
-  .warn {
-    color: #b05e00;
-    font-weight: 600;
-  }
-  
-  .observacoes h3 {
-    margin-top: 1rem;
-  }
-  
-  .observacoes ul {
-    margin: 0.25rem 0 0 1.2rem;
-  }
-  
-  
+}
