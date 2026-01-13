@@ -1,13 +1,14 @@
 
 <div class="container">
-  <h1>{{ title }}</h1>
+  <h1 class="mb-4">{{ title }}</h1>
 
   <!-- Formulário -->
-  <form [formGroup]="form" (ngSubmit)="onCalcular()" novalidate class="form">
-    <div class="field">
-      <label for="rendaMensal">Renda mensal</label>
+  <form [formGroup]="form" (ngSubmit)="onCalcular()" novalidate class="row g-3 align-items-center">
+    <div class="mb-3 mb-md-0 col-12 col-md-5">
+      <label for="rendaMensal" class="form-label">Renda mensal</label>
       <input
         id="rendaMensal"
+        class="form-control"
         type="text"
         formControlName="rendaMensal"
         appCurrencyMask
@@ -16,16 +17,17 @@
         autocomplete="off"
         aria-label="Informe sua renda mensal"
       />
-      <small class="hint">Considere a renda total, sem descontos.</small>
-      <small class="error" *ngIf="form.controls.rendaMensal.invalid && form.controls.rendaMensal.touched">
+      <small class="form-text text-muted">Considere a renda total, sem descontos.</small>
+      <small class="text-danger" *ngIf="form.controls.rendaMensal.invalid && form.controls.rendaMensal.touched">
         Informe um valor maior que zero.
       </small>
     </div>
 
-    <div class="field">
-      <label for="entrada">Entrada + FGTS</label>
+    <div class="mb-3 mb-md-0 col-12 col-md-5">
+      <label for="entrada" class="form-label">Entrada + FGTS</label>
       <input
         id="entrada"
+        class="form-control"
         type="text"
         formControlName="entrada"
         appCurrencyMask
@@ -34,18 +36,22 @@
         autocomplete="off"
         aria-label="Informe o valor disponível para entrada"
       />
-      <small class="hint">Quanto você tem disponível para entrada.</small>
-      <small class="error" *ngIf="form.controls.entrada.invalid && form.controls.entrada.touched">
+      <small class="form-text text-muted">Quanto você tem disponível para entrada.</small>
+      <small class="text-danger" *ngIf="form.controls.entrada.invalid && form.controls.entrada.touched">
         Informe um valor maior que zero.
       </small>
     </div>
 
-    <button type="submit" [disabled]="carregando" class="btn">
-      <span class="btn__label">{{ carregando ? 'Calculando...' : 'Calcular' }}</span>
-      <span class="btn__spinner" *ngIf="carregando" aria-hidden="true"></span>
-    </button>
+    <div class="col-12 col-md-2 d-flex align-items-center justify-content-end">
+      <button type="submit" [disabled]="carregando" class="btn btn-primary">
+        <span class="btn__label">{{ carregando ? 'Calculando...' : 'Calcular' }}</span>
+        <span class="btn__spinner" *ngIf="carregando" aria-hidden="true"></span>
+      </button>
+    </div>
 
-    <div class="error form-error" *ngIf="erro">{{ erro }}</div>
+    <div class="col-12" *ngIf="erro">
+      <div class="alert alert-danger">{{ erro }}</div>
+    </div>
   </form>
 
   <!-- Resultado -->
@@ -74,7 +80,7 @@
 
     <!-- Painel: Potencial -->
     <div
-      class="panel"
+      class="panel text-start text-md-center"
       *ngIf="activeTab === 'potencial'"
       role="tabpanel"
       aria-label="Painel potencial"
@@ -108,26 +114,26 @@
       </div>
 
       <!-- Legenda -->
-      <div class="legend">
-        <div class="legend__item">
-          <span class="legend__dot legend__dot--entrada"></span>
-          <div class="legend__text">
+      <div class="legend row gy-2">
+        <div class="legend__item col-12 col-md-4 d-flex align-items-center">
+          <span class="legend__dot legend__dot--entrada me-2"></span>
+          <div class="legend__text text-start">
             <div class="legend__label">Entrada</div>
             <div class="legend__value">{{ formatBRL(r.valorImovel - r.financiamentoFinal) }}</div>
           </div>
         </div>
 
-        <div class="legend__item">
-          <span class="legend__dot legend__dot--financiamento"></span>
-          <div class="legend__text">
+        <div class="legend__item col-12 col-md-4 d-flex align-items-center">
+          <span class="legend__dot legend__dot--financiamento me-2"></span>
+          <div class="legend__text text-start">
             <div class="legend__label">Valor a financiar</div>
             <div class="legend__value">{{ formatBRL(r.financiamentoFinal) }}</div>
           </div>
         </div>
 
-        <div class="legend__item">
-          <span class="legend__dot legend__dot--taxas"></span>
-          <div class="legend__text">
+        <div class="legend__item col-12 col-md-4 d-flex align-items-center">
+          <span class="legend__dot legend__dot--taxas me-2"></span>
+          <div class="legend__text text-start">
             <div class="legend__label">
               ITBI e outras taxas
               <span class="legend__info" aria-label="Informações sobre taxas">i</span>
@@ -148,7 +154,7 @@
 
     <!-- Painel: Máximo possível para a renda -->
     <div
-      class="panel"
+      class="panel text-start text-md-center"
       *ngIf="activeTab === 'renda'"
       role="tabpanel"
       aria-label="Painel máximo possível para a renda"
@@ -190,26 +196,25 @@
             </div>
 
             <!-- Legenda -->
-            <div class="legend">
-              <div class="legend__item">
-                <span class="legend__dot legend__dot--entrada"></span>
+            <div class="legend row gy-2">
+              <div class="legend__item col-12 col-md-4 d-flex align-items-center">
+                <span class="legend__dot legend__dot--entrada me-2"></span>
                 <div class="legend__text">
                   <div class="legend__label">Entrada mínima necessária</div>
                   <div class="legend__value">{{ formatBRL(r.entradaNecessariaMinima) }}</div>
                 </div>
               </div>
 
-              <div class="legend__item">
-                <span class="legend__dot legend__dot--financiamento"></span>
+              <div class="legend__item col-12 col-md-4 d-flex align-items-center">
+                <span class="legend__dot legend__dot--financiamento me-2"></span>
                 <div class="legend__text">
                   <div class="legend__label">Valor a financiar (pela renda)</div>
                   <div class="legend__value">{{ formatBRL(r.financiamentoPorRenda) }}</div>
-                  
                 </div>
               </div>
 
-              <div class="legend__item">
-                <span class="legend__dot legend__dot--taxas"></span>
+              <div class="legend__item col-12 col-md-4 d-flex align-items-center">
+                <span class="legend__dot legend__dot--taxas me-2"></span>
                 <div class="legend__text">
                   <div class="legend__label">
                     ITBI e outras taxas
