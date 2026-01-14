@@ -1,0 +1,141 @@
+<div class="container form border rounded p-3">
+    <form [formGroup]="form" (ngSubmit)="calcular()">
+        <div class="row">
+            <!-- Valor -->
+            <div class="col-12 col-md-8">
+                <div class="input-group mb-1">
+                    <span class="input-group-text">R$</span>
+                    <input class="form-control text-end" appCurrencyMask formControlName="valor" [placeholder]="getPlaceHolder()"
+                        [ngClass]="{'is-invalid': form.get('valor')?.invalid && form.get('valor')?.touched}">
+                </div>
+                <div class="text-danger small" *ngIf="form.get('valor')?.invalid && form.get('valor')?.touched">
+                    <span *ngIf="form.get('valor')?.errors?.['required']">Informe o valor.</span>
+                    <span *ngIf="form.get('valor')?.errors?.['min']">O valor mínimo é R$ 1.000,00.</span>
+                </div>
+            </div>
+
+            <!-- Prazo -->
+            <div class="col-12 col-md">
+                <div class="input-group mb-1">
+                    <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
+                    <input type="number" formControlName="prazo" placeholder="prazo" step="1" min="5" max="35"
+                        class="form-control text-end"
+                        [ngClass]="{'is-invalid': form.get('prazo')?.invalid && form.get('prazo')?.touched}">
+                    <span class="input-group-text fs-6">anos</span>
+                </div>
+                <div class="text-danger small" *ngIf="form.get('prazo')?.invalid && form.get('prazo')?.touched">
+                    <span *ngIf="form.get('prazo')?.errors?.['required']">Informe o prazo.</span>
+                    <span *ngIf="form.get('prazo')?.errors?.['min']">O prazo mínimo é 5 anos.</span>
+                    <span *ngIf="form.get('prazo')?.errors?.['max']">O prazo máximo é 35 anos.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botão calcular -->
+        <div class="row pt-3">
+            <div class="col-12 col-md-8 text-center text-md-start mb-2 mb-md-0">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-calculator"></i> Calcular
+                </button>
+            </div>
+
+            <!-- Botões PRICE / SAC -->
+            <div class="col-12 col-md text-center text-md-end">
+                <div class="btn-group" role="group">
+                    <button type="button" (click)="setSistema('price')"
+                        [class]="sistema == 'price' ? 'btn btn-primary active' : 'btn btn-light'">
+                        PRICE <i class="fa-solid fa-check" *ngIf="sistema == 'price'"></i>
+                    </button>
+                    <button type="button" (click)="setSistema('sac')"
+                        [class]="sistema == 'sac' ? 'btn btn-primary active' : 'btn btn-light'">
+                        SAC <i class="fa-solid fa-check" *ngIf="sistema == 'sac'"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Resultados -->
+<div class="container pt-5">
+    
+    <div class="row resultado" *ngIf="tipo == 'imovel'">
+        <div class="col-12 col-md text-start">
+            <h6>Renda necessária</h6>
+        </div>
+        <div class="col-12 col-md text-end">
+            {{ resultado.rendaNecessaria | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        </div>
+    </div>
+    
+    <div class="row resultado">
+        <div class="col-12 col-md text-start">
+            <h6>Valor do Imóvel</h6>
+        </div>
+        <div class="col-12 col-md text-end">
+            {{ resultado.valorEntrada + resultado.valorFinanciado | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        </div>
+    </div>
+
+    <div class="row resultado">
+        <div class="col-12 col-md text-start">
+            <h6>Valor da Entrada</h6>
+        </div>
+        <div class="col-12 col-md text-end">
+            {{ resultado.valorEntrada | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        </div>
+    </div>
+
+    <div class="row resultado">
+        <div class="col-12 col-md text-start">
+            <h6>Valor Financiado</h6>
+        </div>
+        <div class="col-12 col-md text-end">
+            {{ resultado.valorFinanciado | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        </div>
+    </div>
+
+    <div class="row resultado">
+        <div class="col-12 col-md text-start">
+            <h6>
+                Taxa de juros nominal
+                <i class="fa-regular fa-circle-question text-primary" data-bs-toggle="tooltip"
+                    title="Explicação da taxa nominal"></i>
+            </h6>
+        </div>
+        <div class="col-12 col-md text-end">
+            {{ resultado.jurosNominal | percent:'1.2-2':'pt-BR' }} a.a
+        </div>
+    </div>
+
+    <div class="row resultado">
+        <div class="col-12 col-md text-start">
+            <h6>
+                Taxa de juros efetivo
+                <i class="fa-regular fa-circle-question text-primary" data-bs-toggle="tooltip"
+                    title="Explicação da taxa efetiva"></i>
+            </h6>
+        </div>
+        <div class="col-12 col-md text-end">
+            {{ resultado.jurosEfetivo | percent:'1.2-2':'pt-BR' }} a.a
+        </div>
+    </div>
+
+    <div class="row resultado">
+        <div class="col-12 col-md text-start">
+            <h6>Primeira parcela</h6>
+        </div>
+        <div class="col-12 col-md text-end">
+            {{ resultado.primeiraParcela | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        </div>
+    </div>
+
+    <div class="row resultado">
+        <div class="col-12 col-md text-start">
+            <h6>Última parcela</h6>
+        </div>
+        <div class="col-12 col-md text-end">
+            {{ resultado.ultimaParcela | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        </div>
+    </div>
+</div>

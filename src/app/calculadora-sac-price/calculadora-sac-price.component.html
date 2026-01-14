@@ -1,0 +1,29 @@
+<div class="container text-center">
+  <h4>Calculadora de Poder de Compra</h4>
+
+  <!-- Navegação das abas -->
+  <ul class="nav nav-tabs pt-3" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="renda-tab" data-bs-toggle="tab" data-bs-target="#renda" type="button"
+        role="tab" aria-controls="renda" aria-selected="true">
+        Pela Renda
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="imovel-tab" data-bs-toggle="tab" data-bs-target="#imovel" type="button"
+        role="tab" aria-controls="imovel" aria-selected="false">
+        Pelo Valor do Imóvel
+      </button>
+    </li>
+  </ul>
+
+  <!-- Conteúdo das abas -->
+  <div class="tab-content border border-top-0 p-3" id="myTabContent">
+    <div class="tab-pane fade show active" id="renda" role="tabpanel" aria-labelledby="renda-tab">
+      <app-calculadora-price-sac-input tipo="renda"></app-calculadora-price-sac-input>
+    </div>
+    <div class="tab-pane fade" id="imovel" role="tabpanel" aria-labelledby="imovel-tab">
+      <app-calculadora-price-sac-input tipo="imovel"></app-calculadora-price-sac-input>
+    </div>
+  </div>
+</div>
