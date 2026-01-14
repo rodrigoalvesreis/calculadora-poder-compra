@@ -5,7 +5,8 @@
             <div class="col-12 col-md-8">
                 <div class="input-group mb-1">
                     <span class="input-group-text">R$</span>
-                    <input class="form-control text-end" appCurrencyMask formControlName="valor" [placeholder]="getPlaceHolder()"
+                    <input class="form-control text-end" appCurrencyMask formControlName="valor"
+                        [placeholder]="getPlaceHolder()"
                         [ngClass]="{'is-invalid': form.get('valor')?.invalid && form.get('valor')?.touched}">
                 </div>
                 <div class="text-danger small" *ngIf="form.get('valor')?.invalid && form.get('valor')?.touched">
@@ -57,85 +58,101 @@
 </div>
 
 <!-- Resultados -->
-<div class="container pt-5">
-    
-    <div class="row resultado" *ngIf="tipo == 'imovel'">
-        <div class="col-12 col-md text-start">
-            <h6>Renda necessária</h6>
+<div *ngIf="resultado.valorImovel > 0">
+    <div class="container pt-5">
+
+        <div class="row resultado" *ngIf="tipo == 'imovel'">
+            <div class="col-12 col-md text-start">
+                <h6>Renda necessária</h6>
+            </div>
+            <div class="col-12 col-md text-end">
+                {{ resultado.rendaNecessaria | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+            </div>
         </div>
-        <div class="col-12 col-md text-end">
-            {{ resultado.rendaNecessaria | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+
+        <div class="row resultado">
+            <div class="col-12 col-md text-start">
+                <h6>Valor do Imóvel</h6>
+            </div>
+            <div class="col-12 col-md text-end">
+                {{ resultado.valorEntrada + resultado.valorFinanciado | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+            </div>
         </div>
-    </div>
-    
-    <div class="row resultado">
-        <div class="col-12 col-md text-start">
-            <h6>Valor do Imóvel</h6>
+
+        <div class="row resultado">
+            <div class="col-12 col-md text-start">
+                <h6>Valor da Entrada <a href="#obs1"><i class="fa-regular fa-circle-question text-primary"
+                            data-bs-toggle="tooltip" title="Explicação do valor da entrada"></i></a></h6>
+            </div>
+            <div class="col-12 col-md text-end">
+                {{ resultado.valorEntrada | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+            </div>
         </div>
-        <div class="col-12 col-md text-end">
-            {{ resultado.valorEntrada + resultado.valorFinanciado | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+
+        <div class="row resultado">
+            <div class="col-12 col-md text-start">
+                <h6>Valor Financiado</h6>
+            </div>
+            <div class="col-12 col-md text-end">
+                {{ resultado.valorFinanciado | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+            </div>
+        </div>
+
+        <div class="row resultado">
+            <div class="col-12 col-md text-start">
+                <h6>
+                    Taxa balcão
+                    <a href="#obs2"><i class="fa-regular fa-circle-question text-primary" data-bs-toggle="tooltip"
+                            title="Explicação da taxa nominal"></i></a>
+                </h6>
+            </div>
+            <div class="col-12 col-md text-end">
+                {{ resultado.jurosNominal | percent:'1.2-2':'pt-BR' }} a.a
+            </div>
+        </div>
+
+        <div class="row resultado">
+            <div class="col-12 col-md text-start">
+                <h6>Primeira parcela</h6>
+            </div>
+            <div class="col-12 col-md text-end">
+                {{ resultado.primeiraParcela | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+            </div>
+        </div>
+
+        <div class="row resultado">
+            <div class="col-12 col-md text-start">
+                <h6>Última parcela</h6>
+            </div>
+            <div class="col-12 col-md text-end">
+                {{ resultado.ultimaParcela | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+            </div>
+        </div>
+
+        <div class="row resultado">
+            <div class="col-12 col-md text-start">
+                <h6>ITBI e outras despesas</h6>
+            </div>
+            <div class="col-12 col-md text-end">
+                {{ resultado.outrasDespesas | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+            </div>
         </div>
     </div>
 
-    <div class="row resultado">
-        <div class="col-12 col-md text-start">
-            <h6>Valor da Entrada</h6>
-        </div>
-        <div class="col-12 col-md text-end">
-            {{ resultado.valorEntrada | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
-        </div>
-    </div>
 
-    <div class="row resultado">
-        <div class="col-12 col-md text-start">
-            <h6>Valor Financiado</h6>
-        </div>
-        <div class="col-12 col-md text-end">
-            {{ resultado.valorFinanciado | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
-        </div>
-    </div>
+    <!-- Observações -->
+    <div class="container pt-5">
 
-    <div class="row resultado">
-        <div class="col-12 col-md text-start">
-            <h6>
-                Taxa de juros nominal
-                <i class="fa-regular fa-circle-question text-primary" data-bs-toggle="tooltip"
-                    title="Explicação da taxa nominal"></i>
-            </h6>
+        <!-- Observação 1 -->
+        <div class="alert alert-info d-flex align-items-center" role="alert" id="obs1">
+            <i class="fa-solid fa-circle-question me-2"></i>
+            <div class="text-start m-3">Entrada de, no mínimo, <b>20% do valor do valor do imóvel</b>, o <b>FGTS</b> pode ser utilizado para composição.</div>
         </div>
-        <div class="col-12 col-md text-end">
-            {{ resultado.jurosNominal | percent:'1.2-2':'pt-BR' }} a.a
-        </div>
-    </div>
 
-    <div class="row resultado">
-        <div class="col-12 col-md text-start">
-            <h6>
-                Taxa de juros efetivo
-                <i class="fa-regular fa-circle-question text-primary" data-bs-toggle="tooltip"
-                    title="Explicação da taxa efetiva"></i>
-            </h6>
-        </div>
-        <div class="col-12 col-md text-end">
-            {{ resultado.jurosEfetivo | percent:'1.2-2':'pt-BR' }} a.a
-        </div>
-    </div>
-
-    <div class="row resultado">
-        <div class="col-12 col-md text-start">
-            <h6>Primeira parcela</h6>
-        </div>
-        <div class="col-12 col-md text-end">
-            {{ resultado.primeiraParcela | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
-        </div>
-    </div>
-
-    <div class="row resultado">
-        <div class="col-12 col-md text-start">
-            <h6>Última parcela</h6>
-        </div>
-        <div class="col-12 col-md text-end">
-            {{ resultado.ultimaParcela | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}
+        <div class="alert alert-info d-flex align-items-center" role="alert" id="obs2">
+            <i class="fa-solid fa-circle-question me-2"></i>
+            <div class="text-start m-3">Se você tiver enquadramento no <b>programa Minha Casa Minha Vida</b>, sua taxa
+                pode ser <b>reduzida.</b></div>
         </div>
     </div>
 </div>
