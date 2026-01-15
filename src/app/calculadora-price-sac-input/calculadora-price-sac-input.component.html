@@ -146,13 +146,13 @@
         <!-- Observação 1 -->
         <div class="alert alert-info d-flex align-items-center" role="alert" id="obs1">
             <i class="fa-solid fa-circle-question me-2"></i>
-            <div class="text-start m-3">Entrada de, no mínimo, <b>20% do valor do valor do imóvel</b>, o <b>FGTS</b> pode ser utilizado para composição.</div>
+            <div class="text-start m-3">O seu FGTS ou o subsídio do PMCMV poderão compor o valor da entrada.</div>
         </div>
 
-        <div class="alert alert-info d-flex align-items-center" role="alert" id="obs2">
+        <div *ngIf="resultado.limitado" class="alert alert-info d-flex align-items-center" role="alert" id="obs2">
             <i class="fa-solid fa-circle-question me-2"></i>
-            <div class="text-start m-3">Se você tiver enquadramento no <b>programa Minha Casa Minha Vida</b>, sua taxa
-                pode ser <b>reduzida.</b></div>
+            <div class="text-start m-3">O valor do imóvel foi limitado ao máximo possível para a sua renda, a fim de manter as taxas mais vantajosas do programa Minha Casa Minha Vida</div>
         </div>
+
     </div>
 </div>
