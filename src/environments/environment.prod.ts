@@ -1,6 +1,6 @@
 
 export const environment = {
-  production: false,
+  production: true,
   prazoAnos: 35,
 
   faixas: [
@@ -38,7 +38,7 @@ export const environment = {
       id: 6,
       limiteRenda: 8600,
       limiteImovel: 350000,
-      taxaEfetiva: 0.085722,
+      taxaEfetiva: 0.084722,
     },
     {
       id: 7,
