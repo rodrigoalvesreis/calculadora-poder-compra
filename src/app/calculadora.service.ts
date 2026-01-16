@@ -19,7 +19,7 @@ const TAXA_BALCAO = 0.1092;
 const PERCENTUAL_COMPROMETIMENTO = 0.3; // 30% da renda
 
 @Injectable({ providedIn: 'root' })
-export class FinanciamentoService {
+export class CalculadoraService {
   private faixas = environment.faixas; 
   
   private readonly PERCENTUAL_FINANCIADO = 0.8;
@@ -168,7 +168,7 @@ export class FinanciamentoService {
     };
   }
 
-  private gerarResultadoVazio(): ResultadoCalculo {
+  gerarResultadoVazio(): ResultadoCalculo {
     return {
       valorImovel: 0, valorFinanciado: 0, valorEntrada: 0, outrasDespesas: 0,
       jurosNominal: 0, jurosEfetivo: 0, primeiraParcela: 0, ultimaParcela: 0,

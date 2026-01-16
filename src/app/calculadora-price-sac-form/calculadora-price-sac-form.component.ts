@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FinanciamentoService, ResultadoCalculo } from '../financiamento-service.service';
+import { CalculadoraService, ResultadoCalculo } from '../calculadora.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -18,7 +18,7 @@ export class CalculadoraPriceSacFormComponent implements OnInit {
   resultado !:ResultadoCalculo;
 
 
-  constructor(private financiamentoService: FinanciamentoService, private fb: FormBuilder) { }
+  constructor(private calculadoraService: CalculadoraService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -26,6 +26,8 @@ export class CalculadoraPriceSacFormComponent implements OnInit {
       prazo: [null, [Validators.required, Validators.min(5), Validators.max(35)]],
       sistema: ['price', Validators.required] // default PRICE
     });
+
+    this.resultado = this.calculadoraService.gerarResultadoVazio();
   }
 
 
@@ -47,7 +49,7 @@ export class CalculadoraPriceSacFormComponent implements OnInit {
     }
     else{
       const { valor, prazo } = this.form.value;
-      this.resultado = this.financiamentoService.calcularFinanciamento(valor, prazo, this.sistema, this.tipo);
+      this.resultado = this.calculadoraService.calcularFinanciamento(valor, prazo, this.sistema, this.tipo);
 
       console.log(this.resultado)
     }
