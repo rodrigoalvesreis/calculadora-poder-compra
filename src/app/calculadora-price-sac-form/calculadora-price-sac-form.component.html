@@ -2,66 +2,47 @@
     <form [formGroup]="form" (ngSubmit)="calcular()">
         <div class="row">
             <!-- Valor -->
-            <div class="col-12 col-md-8">
+            <div class="col-12 col-md-5">
                 <div class="input-group mb-1">
                     <span class="input-group-text">R$</span>
                     <input class="form-control text-end" appCurrencyMask formControlName="valor"
                         [placeholder]="getPlaceHolder()"
                         [ngClass]="{'is-invalid': form.get('valor')?.invalid && form.get('valor')?.touched}">
+                    <span class="input-group-text"  *ngIf="tipo == 'imovel'">
+                        <i class="fa-solid fa-home"></i>
+                    </span>
                 </div>
                 <div class="text-danger small" *ngIf="form.get('valor')?.invalid && form.get('valor')?.touched">
                     <span *ngIf="form.get('valor')?.errors?.['required']">Informe o valor.</span>
-                    <span *ngIf="form.get('valor')?.errors?.['min']">O valor mínimo é R$ 1.000,00.</span>
+                    <span *ngIf="form.get('valor')?.errors?.['min']">O valor mínimo é R$ 100,00.</span>
                 </div>
             </div>
-
-            <!-- Prazo -->
-            <div class="col-12 col-md">
+            <div *ngIf="tipo =='imovel'" class="col-12  col-md-5">
                 <div class="input-group mb-1">
-                    <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
-                    <input type="number" formControlName="prazo" placeholder="prazo" step="1" min="5" max="35"
-                        class="form-control text-end"
-                        [ngClass]="{'is-invalid': form.get('prazo')?.invalid && form.get('prazo')?.touched}">
-                    <span class="input-group-text fs-6">anos</span>
+                    <span class="input-group-text">R$</span>
+                    <input class="form-control text-end" appCurrencyMask formControlName="valorRenda"
+                        placeholder="Informe o valor da Renda"
+                        [ngClass]="{'is-invalid': form.get('valorRenda')?.invalid && form.get('valorRenda')?.touched}">
                 </div>
-                <div class="text-danger small" *ngIf="form.get('prazo')?.invalid && form.get('prazo')?.touched">
-                    <span *ngIf="form.get('prazo')?.errors?.['required']">Informe o prazo.</span>
-                    <span *ngIf="form.get('prazo')?.errors?.['min']">O prazo mínimo é 5 anos.</span>
-                    <span *ngIf="form.get('prazo')?.errors?.['max']">O prazo máximo é 35 anos.</span>
+                <div class="text-danger small" *ngIf="form.get('valorRenda')?.invalid && form.get('valorRenda')?.touched">
+                    <span *ngIf="form.get('valorRenda')?.errors?.['required']">Informe o valor da Renda</span>
+                    <span *ngIf="form.get('valorRenda')?.errors?.['min']">O valor mínimo é R$ 100,00.</span>
                 </div>
             </div>
-        </div>
-
-        <!-- Botão calcular -->
-        <div class="row pt-3">
-            <div class="col-12 col-md-8 text-center text-md-start mb-2 mb-md-0">
+            <div class="col-12 col-md-2 text-center text-md-start mb-2 mb-md-0">
                 <button type="submit" class="btn btn-primary">
                     <i class="fa-solid fa-calculator"></i> Calcular
                 </button>
-            </div>
-
-            <!-- Botões PRICE / SAC -->
-            <div class="col-12 col-md text-center text-md-end">
-                <div class="btn-group" role="group">
-                    <button type="button" (click)="setSistema('price')"
-                        [class]="sistema == 'price' ? 'btn btn-primary active' : 'btn btn-light'">
-                        PRICE <i class="fa-solid fa-check" *ngIf="sistema == 'price'"></i>
-                    </button>
-                    <button type="button" (click)="setSistema('sac')"
-                        [class]="sistema == 'sac' ? 'btn btn-primary active' : 'btn btn-light'">
-                        SAC <i class="fa-solid fa-check" *ngIf="sistema == 'sac'"></i>
-                    </button>
-                </div>
             </div>
         </div>
     </form>
 </div>
 
 <!-- Resultados -->
-<div *ngIf="resultado.valorImovel > 0">
-    <div class="container pt-5">
+<div *ngIf="resultado.valorImovel > 0" >
+    <div class="container p-3  mt-5 border rounded">
 
-        <div class="row resultado" *ngIf="tipo == 'imovel'">
+        <div class="row resultado" *ngIf="tipo == 'prestacao'">
             <div class="col-12 col-md text-start">
                 <h6>Renda necessária</h6>
             </div>
@@ -102,12 +83,21 @@
             <div class="col-12 col-md text-start">
                 <h6>
                     Taxa:
-                    <a href="#obs2"><i *ngIf="resultado.limitado" class="fa-regular fa-circle-question text-primary" data-bs-toggle="tooltip"
-                            title="Explicação da taxa nominal"></i></a>
+                    <a href="#obs2"><i *ngIf="resultado.limitado" class="fa-regular fa-circle-question text-primary"
+                            data-bs-toggle="tooltip" title="Explicação da taxa nominal"></i></a>
                 </h6>
             </div>
             <div class="col-12 col-md text-end">
-                {{ resultado.jurosNominal | percent:'1.2-2':'pt-BR' }} a.a
+                {{ resultado.jurosEfetivo | percent:'1.2-4':'pt-BR' }} a.a
+            </div>
+        </div>
+
+         <div class="row resultado">
+            <div class="col-12 col-md text-start">
+                <h6>Sistema de Amortização</h6>
+            </div>
+            <div class="col-12 col-md text-end">
+                {{ resultado.sistema | uppercase}}
             </div>
         </div>
 
@@ -151,7 +141,8 @@
 
         <div *ngIf="resultado.limitado" class="alert alert-info d-flex align-items-center" role="alert" id="obs2">
             <i class="fa-solid fa-circle-question me-2"></i>
-            <div class="text-start m-3">O valor do imóvel foi limitado ao máximo possível para a sua renda, a fim de manter as taxas mais vantajosas do programa Minha Casa Minha Vida</div>
+            <div class="text-start m-3">O valor do imóvel foi limitado ao máximo possível para a sua renda, a fim de
+                manter as taxas mais vantajosas do programa Minha Casa Minha Vida</div>
         </div>
 
     </div>

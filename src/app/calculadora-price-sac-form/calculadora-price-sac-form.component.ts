@@ -10,20 +10,20 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CalculadoraPriceSacFormComponent implements OnInit {
 
   @Input()
-  tipo: 'renda' | 'imovel' = 'renda';
-
+  tipo: 'renda' | 'imovel' | 'prestacao' = 'renda';
   sistema: 'price' | 'sac' = 'price';
 
   form!: FormGroup;
   resultado !:ResultadoCalculo;
 
 
+
   constructor(private calculadoraService: CalculadoraService, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      valor: [null, [Validators.required, Validators.min(1000)]],
-      prazo: [null, [Validators.required, Validators.min(5), Validators.max(35)]],
+      valor: [null, [Validators.required, Validators.min(100)]],      
+      valorRenda: [null, [this.tipo == 'imovel' ? Validators.required : Validators.nullValidator, Validators.min(100)]],      
       sistema: ['price', Validators.required] // default PRICE
     });
 
@@ -38,7 +38,17 @@ export class CalculadoraPriceSacFormComponent implements OnInit {
   }
 
   getPlaceHolder() {
-    return `Digite o valor ${this.tipo == 'renda' ? 'da Renda' : 'do Imóvel'}`
+    let descricao  = 'da Renda';
+   
+    if(this.tipo == 'imovel'){
+      descricao = 'do Imóvel';
+    }
+    
+    if(this.tipo == 'prestacao'){
+      descricao = 'da Prestação';
+    }
+
+    return `Digite o valor ${descricao}`;
   }
 
   calcular() {
@@ -48,8 +58,14 @@ export class CalculadoraPriceSacFormComponent implements OnInit {
       this.form.markAllAsTouched();
     }
     else{
-      const { valor, prazo } = this.form.value;
-      this.resultado = this.calculadoraService.calcularFinanciamento(valor, prazo, this.sistema, this.tipo);
+      const { valor, valorRenda } = this.form.value;
+      
+      if(this.tipo == 'imovel'){
+        this.resultado = this.calculadoraService.calcularFinanciamentoImovelRenda(valor, valorRenda);
+      }
+      else{
+        this.resultado = this.calculadoraService.calcularFinanciamento(valor, this.tipo);
+      }
 
       console.log(this.resultado)
     }

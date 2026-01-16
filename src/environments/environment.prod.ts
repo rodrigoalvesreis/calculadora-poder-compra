@@ -1,55 +1,56 @@
 
 export const environment = {
-  production: true,
+  production: false,
+  prazoAnos: 35,
 
   faixas: [
     {
       id: 1,
       limiteRenda: 2160,
       limiteImovel: 210000,
-      taxaNominal: 0.0475,
+      taxaEfetiva: 0.048548,
     },
     {
       id: 2,
       limiteRenda: 2850,
       limiteImovel: 210000,
-      taxaNominal: 0.05,
+      taxaEfetiva: 0.051162,
     },
     {
       id: 3,
       limiteRenda: 3500,
       limiteImovel: 210000,
-      taxaNominal: 0.055,
+      taxaEfetiva: 0.056408,
     },
     {
       id: 4,
       limiteRenda: 4000,
       limiteImovel: 210000,
-      taxaNominal: 0.06,
+      taxaEfetiva: 0.061678,
     },
     {
       id: 5,
       limiteRenda: 4700,
       limiteImovel: 210000,
-      taxaNominal: 0.07,
+      taxaEfetiva: 0.072290,
     },
     {
       id: 6,
       limiteRenda: 8600,
       limiteImovel: 350000,
-      taxaNominal: 0.0816,
+      taxaEfetiva: 0.085722,
     },
     {
       id: 7,
       limiteRenda: 12000,
       limiteImovel: 500000,
-      taxaNominal: 0.10,
+      taxaEfetiva: 0.10,
     },
     {
       id: 8, // taxa balcão
       limiteRenda: Number.MAX_SAFE_INTEGER,
       limiteImovel: Number.MAX_SAFE_INTEGER,
-      taxaNominal: 0.1149
+      taxaEfetiva: 0.1149
     },
   ],
 };
