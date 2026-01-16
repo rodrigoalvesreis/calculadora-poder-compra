@@ -49,7 +49,7 @@ export const environment = {
       id: 8, // taxa balcão
       limiteRenda: Number.MAX_SAFE_INTEGER,
       limiteImovel: Number.MAX_SAFE_INTEGER,
-      taxaNominal: 0.1092,
+      taxaNominal: 0.1149
     },
   ],
 };
