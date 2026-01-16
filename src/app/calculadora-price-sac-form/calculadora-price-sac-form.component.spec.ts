@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CalculadoraPriceSacInputComponent } from './calculadora-price-sac-input.component';
+import { CalculadoraPriceSacFormComponent } from './calculadora-price-sac-form.component';
 
 describe('CalculadoraPriceSacInputComponent', () => {
-  let component: CalculadoraPriceSacInputComponent;
-  let fixture: ComponentFixture<CalculadoraPriceSacInputComponent>;
+  let component: CalculadoraPriceSacFormComponent;
+  let fixture: ComponentFixture<CalculadoraPriceSacFormComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CalculadoraPriceSacInputComponent]
+      declarations: [CalculadoraPriceSacFormComponent]
     });
-    fixture = TestBed.createComponent(CalculadoraPriceSacInputComponent);
+    fixture = TestBed.createComponent(CalculadoraPriceSacFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -3,11 +3,11 @@ import { FinanciamentoService, ResultadoCalculo } from '../financiamento-service
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-calculadora-price-sac-input',
-  templateUrl: './calculadora-price-sac-input.component.html',
-  styleUrls: ['./calculadora-price-sac-input.component.css']
+  selector: 'app-calculadora-price-sac-form',
+  templateUrl: './calculadora-price-sac-form.component.html',
+  styleUrls: ['./calculadora-price-sac-form.component.css']
 })
-export class CalculadoraPriceSacInputComponent implements OnInit {
+export class CalculadoraPriceSacFormComponent implements OnInit {
 
   @Input()
   tipo: 'renda' | 'imovel' = 'renda';
@@ -15,7 +15,7 @@ export class CalculadoraPriceSacInputComponent implements OnInit {
   sistema: 'price' | 'sac' = 'price';
 
   form!: FormGroup;
-  resultado = new ResultadoCalculo(0, 0, 0, 0, 0);
+  resultado !:ResultadoCalculo;
 
 
   constructor(private financiamentoService: FinanciamentoService, private fb: FormBuilder) { }

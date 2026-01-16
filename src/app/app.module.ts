@@ -9,11 +9,11 @@ import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { CurrencyMaskDirective } from './currency-mask.directive';
 import { CalculadoraSacPriceComponent } from './calculadora-sac-price/calculadora-sac-price.component';
-import { CalculadoraPriceSacInputComponent } from './calculadora-price-sac-input/calculadora-price-sac-input.component';
+import { CalculadoraPriceSacFormComponent } from './calculadora-price-sac-form/calculadora-price-sac-form.component';
 registerLocaleData(localePt);
 
 @NgModule({
-  declarations: [AppComponent, CurrencyMaskDirective, CalculadoraSacPriceComponent, CalculadoraPriceSacInputComponent],
+  declarations: [AppComponent, CurrencyMaskDirective, CalculadoraSacPriceComponent, CalculadoraPriceSacFormComponent],
   imports: [BrowserModule, ReactiveFormsModule],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
   bootstrap: [AppComponent],
