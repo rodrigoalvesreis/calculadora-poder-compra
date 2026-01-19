@@ -1,0 +1,30 @@
+<div class="container text-center">
+  <ul class="nav nav-pills justify-content-center pt-3" id="egiTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button 
+        class="nav-link active" 
+        id="egi-tab" 
+        data-bs-toggle="tab" 
+        data-bs-target="#egi-pane" 
+        type="button"
+        role="tab" 
+        aria-controls="egi-pane" 
+        aria-selected="true">
+        EGI
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content p-3" id="egiTabContent">
+    <div 
+      class="tab-pane fade show active" 
+      id="egi-pane" 
+      role="tabpanel" 
+      aria-labelledby="egi-tab" 
+      tabindex="0">
+      
+      <app-calculadora-egi-form></app-calculadora-egi-form>
+      
+    </div>
+  </div>
+</div>

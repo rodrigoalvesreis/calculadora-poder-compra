@@ -1,4 +1,13 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow">
+  <div class="container">
+    <span class="navbar-brand">Calculadoras</span>
+    <div class="navbar-nav">
+      <a class="nav-link" routerLink="/poder-compra" routerLinkActive="active fw-bold">Poder de Compra</a>
+      <a class="nav-link" routerLink="/egi" routerLinkActive="active fw-bold">EGI</a>
+    </div>
+  </div>
+</nav>
 
-<div class="container">
-<app-calculadora-sac-price></app-calculadora-sac-price>
+<div class="container mt-4">
+  <router-outlet></router-outlet>
 </div>

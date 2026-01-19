@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CalculadoraService, ResultadoCalculo } from '../calculadora.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {CalculadoraService, ResultadoCalculo} from '../calculadora.service'
 
 @Component({
   selector: 'app-calculadora-price-sac-form',
