@@ -1,12 +1,10 @@
-
 import { Injectable } from '@angular/core';
+import { environment } from '../environments/environment';
 
 export interface CalculadoraEGIInput {
-  rendaMensal: number;       // Renda bruta mensal do cliente
-  valorImovel: number;       // Valor do imóvel
-  saldoDevedor?: number;     // Saldo devedor (opcional)
-  prazoMeses?: number;       // Prazo desejado (opcional, padrão: 240)
-  taxaJurosAnual?: number;   // Taxa de juros anual (opcional, padrão: 12%)
+  rendaMensal: number;
+  valorImovel: number;
+  saldoDevedor?: number;
 }
 
 export interface CalculadoraEGIResult {
@@ -14,6 +12,8 @@ export interface CalculadoraEGIResult {
   prestacaoMaximaPermitida: number;
   podePortarSaldoDevedor: boolean;
   prestacaoEstimada: number;
+  taxaAplicadaAnual: number;
+  prazoAplicadoAnos: number;
 }
 
 @Injectable({
@@ -22,32 +22,39 @@ export interface CalculadoraEGIResult {
 export class CalculadoraEGIService {
 
   calcularEGI(input: CalculadoraEGIInput): CalculadoraEGIResult {
-    // Parâmetros padrão
-    const prazo = input.prazoMeses || 240;
-    const taxaJurosAnual = input.taxaJurosAnual || 12;
-    const taxaJurosMensal = taxaJurosAnual / 12 / 100;
+    // Busca parâmetros específicos do EGI no environment
+    const taxaJurosAnual = environment.taxaJurosAnualEGI;
+    const prazoAnos = environment.prazoAnosEGI;
+    
+    // Cálculos de conversão
+    const nMeses = prazoAnos * 12;
+    const taxaJurosMensal = taxaJurosAnual / 12 ;
 
-    // Valor máximo financiável: 60% do valor do imóvel
+    // Regras de negócio (LTV 60% e DTI 30%)
     const valorMaximoFinanciavel = input.valorImovel * 0.6;
-
-    // Prestação máxima permitida: 30% da renda mensal
     const prestacaoMaximaPermitida = input.rendaMensal * 0.3;
-
-    // Pode portar saldo devedor?
     const podePortarSaldoDevedor = !input.saldoDevedor || input.saldoDevedor <= valorMaximoFinanciavel;
 
-    // Prestação estimada (Fórmula de financiamento Price)
-    // PMT = PV * [i * (1 + i)^n] / [(1 + i)^n - 1]
+    // Definição do PV (Valor Presente)
     const PV = input.saldoDevedor || valorMaximoFinanciavel;
-    const n = prazo;
-    const i = taxaJurosMensal;
-    const prestacaoEstimada = PV * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+
+    // Cálculo da Prestação (Fórmula Price)
+    let prestacaoEstimada = 0;
+    if (taxaJurosMensal > 0) {
+      const i = taxaJurosMensal;
+      const n = nMeses;
+      prestacaoEstimada = PV * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+    } else {
+      prestacaoEstimada = PV / nMeses;
+    }
 
     return {
-      valorMaximoFinanciavel,
-      prestacaoMaximaPermitida,
+      valorMaximoFinanciavel: Number(valorMaximoFinanciavel.toFixed(2)),
+      prestacaoMaximaPermitida: Number(prestacaoMaximaPermitida.toFixed(2)),
       podePortarSaldoDevedor,
-      prestacaoEstimada
+      prestacaoEstimada: Number(prestacaoEstimada.toFixed(2)),
+      taxaAplicadaAnual: taxaJurosAnual,
+      prazoAplicadoAnos: prazoAnos
     };
   }
 }

@@ -17,7 +17,7 @@ export interface ResultadoCalculo {
   limitado: boolean;      // Indica se o valor foi restringido por teto de renda ou faixa
   sistema: 'sac' | 'price';
 }
-
+ 
 // Constantes de mercado
 const TAXA_BALCAO = 0.1092; // caso não consiga ler do environment
 const PERCENTUAL_COMPROMETIMENTO = 0.3; // Limite de 30% da renda mensal bruta
