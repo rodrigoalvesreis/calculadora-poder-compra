@@ -1,7 +1,10 @@
 
 export const environment = {
-  production: true,
+  production: false,
   prazoAnos: 35,
+
+  taxaJurosAnualEGI: 0.132,
+  prazoAnosEGI: 20,
 
   faixas: [
     {
