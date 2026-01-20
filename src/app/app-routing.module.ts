@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { CalculadoraSacPriceComponent } from './calculadora-sac-price/calculadora-sac-price.component';
+import { CalculadoraPoderCompraComponent } from './calculadora-poder-compra/calculadora-poder-compra.component';
 import { CalculadoraEgiComponent } from './calculadora-egi/calculadora-egi.component';
 
 const routes: Routes = [
   // Rota Poder de Compra (Antiga sac-price)
-  { path: 'poder-compra', component: CalculadoraSacPriceComponent },
+  { path: 'poder-compra', component: CalculadoraPoderCompraComponent },
   
   // Rota EGI
   { path: 'egi', component: CalculadoraEgiComponent },
