@@ -9,7 +9,7 @@ import localePt from '@angular/common/locales/pt';
 
 // Diretivas e Services
 import { CurrencyMaskDirective } from './currency-mask.directive';
-import { CalculadoraEGIService } from './calculadora-egi.service';
+import { EgiCalculatorService } from './calculadora-egi.service';
 
 // Componentes EGI (Novos)
 import { CalculadoraEgiComponent } from './calculadora-egi/calculadora-egi.component';
@@ -40,7 +40,7 @@ registerLocaleData(localePt);
     AppRoutingModule // Necessário caso use [(ngModel)] em algum lugar
   ],
   providers: [
-    CalculadoraEGIService, // Injetando o serviço no módulo
+    EgiCalculatorService, // Injetando o serviço no módulo
     { provide: LOCALE_ID, useValue: 'pt-BR' }
   ],
   bootstrap: [AppComponent],

@@ -24,8 +24,8 @@ const PERCENTUAL_COMPROMETIMENTO = 0.3; // Limite de 30% da renda mensal bruta
 
 @Injectable({ providedIn: 'root' })
 export class CalculadoraService {
-  private faixas = environment.faixas;
-  private prazoAnos = environment.prazoAnos;
+  private faixas = environment.poderCompraConfig.faixas;
+  private prazoAnos = environment.poderCompraConfig.prazoAnos;
 
   //Percentual máximo que a caixa financia sobre o valor do imóvel
   private readonly PERCENTUAL_FINANCIADO = 0.8; 

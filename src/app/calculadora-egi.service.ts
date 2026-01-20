@@ -1,60 +1,135 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 
-export interface CalculadoraEGIInput {
-  rendaMensal: number;
+export interface EgiInput {
   valorImovel: number;
-  saldoDevedor?: number;
+  saldoDevedor: number;
+  renda: number;
+  liquidacaoSimultanea: boolean;
 }
 
-export interface CalculadoraEGIResult {
+export interface EgiOutput {
   valorMaximoFinanciavel: number;
   prestacaoMaximaPermitida: number;
-  podePortarSaldoDevedor: boolean;
   prestacaoEstimada: number;
   taxaAplicadaAnual: number;
   prazoAplicadoAnos: number;
+  erro?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class CalculadoraEGIService {
+export class EgiCalculatorService {
+  private config = environment.egiConfig;
 
-  calcularEGI(input: CalculadoraEGIInput): CalculadoraEGIResult {
-    // Busca parâmetros específicos do EGI no environment
-    const taxaJurosAnual = environment.taxaJurosAnualEGI;
-    const prazoAnos = environment.prazoAnosEGI;
-    
-    // Cálculos de conversão
-    const nMeses = prazoAnos * 12;
-    const taxaJurosMensal = taxaJurosAnual / 12 ;
+  constructor() {}
 
-    // Regras de negócio (LTV 60% e DTI 30%)
-    const valorMaximoFinanciavel = input.valorImovel * 0.6;
-    const prestacaoMaximaPermitida = input.rendaMensal * 0.3;
-    const podePortarSaldoDevedor = !input.saldoDevedor || input.saldoDevedor <= valorMaximoFinanciavel;
+  /**
+   * Executa o cálculo principal do EGI baseado nas regras de negócio.
+   */
+ calcular(input: EgiInput): EgiOutput {
+    const { valorImovel, saldoDevedor, renda, liquidacaoSimultanea } = input;
+    const { limites, cenarios } = this.config;
 
-    // Definição do PV (Valor Presente)
-    const PV = input.saldoDevedor || valorMaximoFinanciavel;
+    let taxaAnual = 0;
+    let prazoAnos = 0;
+    const prestacaoMaxima = renda * limites.percentualMaximoRenda;
 
-    // Cálculo da Prestação (Fórmula Price)
-    let prestacaoEstimada = 0;
-    if (taxaJurosMensal > 0) {
-      const i = taxaJurosMensal;
-      const n = nMeses;
-      prestacaoEstimada = PV * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
-    } else {
-      prestacaoEstimada = PV / nMeses;
+    // --- SELEÇÃO DE CENÁRIO (Mantendo seu código original) ---
+    if (saldoDevedor > 0 && liquidacaoSimultanea) {
+      prazoAnos = cenarios.liquidacao.prazoAnos;
+      if (this.isFaixaBaixa(valorImovel)) {
+        return this.retornarErro('Liquidação simultânea não permitida para imóveis até 100k.');
+      } else if (this.isFaixaAlta(valorImovel)) {
+        taxaAnual = cenarios.liquidacao.taxaAcimaCorte;
+      } else {
+        return this.retornarErro('Valor do imóvel abaixo do mínimo permitido.');
+      }
+    }
+    else if (saldoDevedor <= 0) {
+      prazoAnos = cenarios.quitado.prazoAnos;
+      taxaAnual = this.isFaixaBaixa(valorImovel) ? cenarios.quitado.taxaAteCorte : cenarios.quitado.taxaAcimaCorte;
+      if (valorImovel < limites.valorMinimoImovel) return this.retornarErro('Valor do imóvel abaixo do mínimo permitido.');
+    }
+    else {
+      prazoAnos = cenarios.financiado.prazoAnos;
+      taxaAnual = this.isFaixaBaixa(valorImovel) ? cenarios.financiado.taxaAteCorte : cenarios.financiado.taxaAcimaCorte;
+      if (valorImovel < limites.valorMinimoImovel) return this.retornarErro('Valor do imóvel abaixo do mínimo permitido.');
     }
 
+    // --- CÁLCULOS FINANCEIROS ---
+    const prazoMeses = prazoAnos * 12;
+    const taxaMensalDecimal = Math.pow(1 + taxaAnual, 1 / 12) - 1;
+
+    let tetoImovel = valorImovel * limites.percentualMaximoLtv;
+    if (saldoDevedor > 0 && !liquidacaoSimultanea) {
+      const equity = valorImovel - saldoDevedor;
+      tetoImovel = Math.min(tetoImovel, equity);
+    }
+
+    const tetoRenda = this.calcularValorPresente(prestacaoMaxima, taxaMensalDecimal, prazoMeses);
+    
+    // Define o valor potencial
+    let valorMaximoFinanciavel = Math.min(tetoImovel, tetoRenda);
+
+    // --- NOVA REGRA: VALIDAÇÃO DE TICKET MÍNIMO ---
+    if (valorMaximoFinanciavel < limites.valorMinimoCredito) {
+      return this.retornarErro(`O valor de crédito calculado (${this.arredondar(valorMaximoFinanciavel)}) é inferior ao mínimo permitido de R$ 50.000,00.`);
+    }
+
+    const prestacaoEstimada = this.calcularPMT(valorMaximoFinanciavel, taxaMensalDecimal, prazoMeses);
+
     return {
-      valorMaximoFinanciavel: Number(valorMaximoFinanciavel.toFixed(2)),
-      prestacaoMaximaPermitida: Number(prestacaoMaximaPermitida.toFixed(2)),
-      podePortarSaldoDevedor,
-      prestacaoEstimada: Number(prestacaoEstimada.toFixed(2)),
-      taxaAplicadaAnual: taxaJurosAnual,
+      valorMaximoFinanciavel: this.arredondar(valorMaximoFinanciavel),
+      prestacaoMaximaPermitida: this.arredondar(prestacaoMaxima),
+      prestacaoEstimada: this.arredondar(prestacaoEstimada),
+      taxaAplicadaAnual: taxaAnual,
       prazoAplicadoAnos: prazoAnos
+    };
+  }
+
+  // --- HELPERS ---
+
+  private isFaixaBaixa(valor: number): boolean {
+    return valor >= this.config.limites.valorMinimoImovel && valor <= this.config.limites.pontoCorteTaxa;
+  }
+
+  private isFaixaAlta(valor: number): boolean {
+    return valor > this.config.limites.pontoCorteTaxa;
+  }
+
+  /**
+   * Fórmula PMT (Sistema Price):
+   * $PMT = PV \cdot \frac{i \cdot (1 + i)^n}{(1 + i)^n - 1}$
+   */
+  private calcularPMT(pv: number, i: number, n: number): number {
+    if (pv <= 0) return 0;
+    if (i === 0) return pv / n;
+    return pv * (i * Math.pow(1 + i, n)) / (Math.pow(1 + i, n) - 1);
+  }
+
+  /**
+   * Fórmula Valor Presente (PV) a partir de uma prestação (PMT):
+   * $PV = PMT \cdot \frac{1 - (1 + i)^{-n}}{i}$
+   */
+  private calcularValorPresente(pmt: number, i: number, n: number): number {
+    if (i === 0) return pmt * n;
+    return pmt * ((1 - Math.pow(1 + i, -n)) / i);
+  }
+
+  private arredondar(valor: number): number {
+    return Math.round(valor * 100) / 100;
+  }
+
+  private retornarErro(msg: string): EgiOutput {
+    return {
+      valorMaximoFinanciavel: 0,
+      prestacaoMaximaPermitida: 0,
+      prestacaoEstimada: 0,
+      taxaAplicadaAnual: 0,
+      prazoAplicadoAnos: 0,
+      erro: msg
     };
   }
 }
