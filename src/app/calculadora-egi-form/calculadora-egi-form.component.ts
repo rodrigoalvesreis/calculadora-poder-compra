@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EgiCalculatorService, EgiOutput } from '../calculadora-egi.service';
+import { EgiCalculatorService, ResultadoCalculo } from '../services/calculadora-egi.service';
 
 @Component({
   selector: 'app-calculadora-egi-form',
@@ -9,7 +9,7 @@ import { EgiCalculatorService, EgiOutput } from '../calculadora-egi.service';
 })
 export class CalculadoraEgiFormComponent implements OnInit {
   form!: FormGroup;
-  resultado?: EgiOutput;
+  resultado?: ResultadoCalculo;
 
   liquidacaoSimultanea = false;
 
@@ -45,12 +45,12 @@ export class CalculadoraEgiFormComponent implements OnInit {
 
     const { valorImovel, valorRenda, saldoDevedor } = this.form.value;
 
-    this.resultado = this.egiService.calcular({
-      renda: valorRenda,
-      valorImovel: valorImovel,
-      saldoDevedor: saldoDevedor,
-      liquidacaoSimultanea: this.liquidacaoSimultanea
-    });
+    this.resultado = this.egiService.calcular(
+      valorImovel,
+      saldoDevedor,
+      valorRenda,
+      this.liquidacaoSimultanea
+    );
 
     console.log(this.resultado);
   }

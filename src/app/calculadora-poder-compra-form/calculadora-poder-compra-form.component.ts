@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {CalculadoraService, ResultadoCalculo} from '../calculadora.service'
+import {CalculadoraService, ResultadoCalculo} from '../services/calculadora.service'
 
 @Component({
-  selector: 'app-calculadora-price-sac-form',
-  templateUrl: './calculadora-price-sac-form.component.html',
-  styleUrls: ['./calculadora-price-sac-form.component.css']
+  selector: 'app-calculadora-poder-compra-form',
+  templateUrl: './calculadora-poder-compra-form.component.html',
+  styleUrls: ['./calculadora-poder-compra-form.component.css']
 })
-export class CalculadoraPriceSacFormComponent implements OnInit {
+export class CalculadoraPoderCompraFormComponent implements OnInit {
 
   @Input()
   tipo: 'renda' | 'imovel' | 'prestacao' = 'renda';
