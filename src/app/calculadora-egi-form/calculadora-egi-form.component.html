@@ -128,7 +128,7 @@
       </div>
     </div>
 
-    <div *ngIf="form.get('saldoDevedor')?.value > 0" class="alert alert-info d-flex align-items-center" role="alert" id="obs1">
+    <div *ngIf="permiteLiquidacaoSimultanea()" class="alert alert-info d-flex align-items-center" role="alert" id="obs1">
       <i class="fa-solid fa-circle-question me-2"></i>
       <div class="text-start m-3">O que é a Liquidação Simultânea?<br />
         A Liquidação Simultânea é a opção ideal para quem já possui um financiamento imobiliário em aberto, mas deseja
