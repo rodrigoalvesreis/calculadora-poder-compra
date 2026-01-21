@@ -57,7 +57,7 @@ export const environment = {
   ],
  },
 
-  // Configuração Centralizada da Calculadora EGI
+//Configuração Centralizada da Calculadora EGI
 egiConfig: {
     limites: {
       valorMinimoImovel: 50000,
@@ -79,7 +79,8 @@ egiConfig: {
       },
       liquidacao: {
         prazoAnos: 20, 
-        taxaAcimaCorte: 0.1512
+        taxaAcimaCorte: 0.1512,
+        valorMinimoCredito: 100000
       }
     }
   }
