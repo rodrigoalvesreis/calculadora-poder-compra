@@ -1,5 +1,5 @@
 <div class="container form border rounded p-3">
-  <form [formGroup]="form" (ngSubmit)="calcular()" >
+  <form [formGroup]="form" (ngSubmit)="calcular()">
     <div class="row">
       <div class="col-12 col-md-4">
         <div class="input-group">
@@ -10,7 +10,7 @@
         </div>
         <div class="text-danger small" *ngIf="form.get('valorImovel')?.invalid && form.get('valorImovel')?.touched">
           <span *ngIf="form.get('valorImovel')?.errors?.['required']">Informe o valor do imóvel</span>
-          <span *ngIf="form.get('valorImovel')?.errors?.['min']">O valor mínimo é R$ 100,00.</span>
+          <span *ngIf="form.get('valorImovel')?.errors?.['min']">O valor mínimo é R$ 84.000,00.</span>
         </div>
       </div>
 
@@ -50,22 +50,45 @@
   </form>
 </div>
 
-<div *ngIf="resultado && !resultado.erro" class="mt-5 animate__animated animate__fadeIn">
+<div *ngIf="resultado?.erro" class="mt-4 animate__animated animate__shakeX">
+  <div class="alert alert-danger shadow-sm border-0 d-flex justify-content-center align-items-center py-3" role="alert">
+
+    <div class="d-flex align-items-center">
+      <i class="fa-solid fa-triangle-exclamation fs-4 me-3"></i>
+      <div class="text-center text-md-start">
+        <h6 class="alert-heading fw-bold mb-1 text-center">Atenção!</h6>
+        <p class="mb-0">{{ resultado?.erro }}</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div *ngIf="resultado" class="mt-5 animate__animated animate__fadeIn">
 
   <div class="row g-4">
     <div class="col-md-7">
       <div class="card border-0 shadow-sm h-100">
         <div class="card-body p-4">
-          <h6 class="text-secondary text-uppercase fw-bold mb-4" style="letter-spacing: 1px;">Sua Capacidade de Crédito
+          <h6 class="text-secondary text-uppercase fw-bold mb-4" style="letter-spacing: 1px;">Sua Capacidade de
+            Crédito
           </h6>
 
-          <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
-            <span class="text-muted fw-bold">Crédito Máximo</span>
+          <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+            <span class="text-muted fw-bold">Valor da Garantia</span>
+            <span>{{ resultado.valorMaximoEGI | currency:'BRL' }}</span>
+          </div>
+
+          <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+            <div class="text-muted fw-bold text-start">Crédito Máximo<br /><small class="text-secondary fw-normal">de
+                acordo com a renda e saldo devedor</small></div>
             <span>{{ resultado.valorMaximoFinanciavel | currency:'BRL' }}</span>
           </div>
 
-          <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
-            <span class="text-muted fw-bold">Prestação Mensal Estimada</span>
+          <div class="d-flex justify-content-between  mb-3 pb-3 border-bottom">
+            <span class="text-muted fw-bold text-start">Prestação Mensal Estimada<br /><small
+                class="text-secondary fw-normal">sistema de amortização: PRICE</small></span>
             <span>{{ resultado.prestacaoEstimada | currency:'BRL' }}</span>
           </div>
         </div>
@@ -94,11 +117,11 @@
           </div>
           <div class="row p-3 mt-3 rounded bg-dark" *ngIf="permiteLiquidacaoSimultanea()">
             <div class="col-12 d-flex justify-content-center">
-              <div class="form-check form-switch custom-switch" >
-                <input class="form-check-input" type="checkbox" id="switchLiquidação"
-                  [(ngModel)]="liquidacaoSimultanea" role="switch" (change)="calcular()">
-                <label class="form-check-label fw-bold text-white ms-2" for="switchLiquidação" >
-                    Liquidação Simultânea *
+              <div class="form-check form-switch custom-switch">
+                <input class="form-check-input" type="checkbox" id="switchLiquidação" [(ngModel)]="liquidacaoSimultanea"
+                  role="switch" (change)="calcular()">
+                <label class="form-check-label fw-bold text-white ms-2" for="switchLiquidação">
+                  Liquidação Simultânea *
                 </label>
               </div>
             </div>
@@ -128,29 +151,18 @@
       </div>
     </div>
 
-    <div *ngIf="form.get('saldoDevedor')?.value > 0" class="alert alert-info d-flex align-items-center" role="alert" id="obs1">
+    <div *ngIf="permiteLiquidacaoSimultanea()" class="alert alert-info d-flex align-items-center" role="alert"
+      id="obs1">
       <i class="fa-solid fa-circle-question me-2"></i>
       <div class="text-start m-3">O que é a Liquidação Simultânea?<br />
-        A Liquidação Simultânea é a opção ideal para quem já possui um financiamento imobiliário em aberto, mas deseja
-        contratar um novo crédito (EGI) utilizando o mesmo imóvel como garantia.
+        A Liquidação Simultânea permite que você use parte do seu novo crédito para quitar dívidas atuais, garantindo a
+        menor taxa de juros da simulação e unificando seus pagamentos em uma única parcela
       </div>
     </div>
   </div>
 
 
-</div>
 
 
-<div *ngIf="resultado?.erro" class="mt-4 animate__animated animate__shakeX">
-  <div class="alert alert-danger shadow-sm border-0 d-flex justify-content-center align-items-center py-3" role="alert">
 
-    <div class="d-flex align-items-center">
-      <i class="fa-solid fa-triangle-exclamation fs-4 me-3"></i>
-      <div class="text-center text-md-start">
-        <h6 class="alert-heading fw-bold mb-1 text-center">Atenção!</h6>
-        <p class="mb-0">{{ resultado?.erro }}</p>
-      </div>
-    </div>
-
-  </div>
 </div>
