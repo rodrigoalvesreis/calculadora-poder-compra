@@ -105,8 +105,8 @@ export class EgiCalculatorService {
       prazoAnos = cenario.prazoAnos;
       taxaAnual = estaAbaixoCorteEGI ? cenario.taxaAteCorte : cenario.taxaAcimaCorte;
 
-      if (valorImovel < limites.valorMinimoImovel) {
-        erroSimulacao = `Valor do imóvel abaixo do mínimo de R$ ${limites.valorMinimoImovel.toLocaleString('pt-BR')}.`;
+      if (valorImovel < limites.valorMinimoCredito) {
+        erroSimulacao = `Valor do imóvel abaixo do mínimo de R$ ${limites.valorMinimoCredito.toLocaleString('pt-BR')}.`;
       }
     }
 

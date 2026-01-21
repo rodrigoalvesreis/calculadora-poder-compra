@@ -60,7 +60,7 @@ export const environment = {
 //Configuração Centralizada da Calculadora EGI
 egiConfig: {
     limites: {
-      valorMinimoImovel: 50000,
+      valorMinimoImovel: 84000,
       pontoCorteTaxa: 100000,
       percentualMaximoLtv: 0.60,
       percentualMaximoRenda: 0.30,

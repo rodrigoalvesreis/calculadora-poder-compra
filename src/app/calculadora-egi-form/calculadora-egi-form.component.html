@@ -10,7 +10,7 @@
         </div>
         <div class="text-danger small" *ngIf="form.get('valorImovel')?.invalid && form.get('valorImovel')?.touched">
           <span *ngIf="form.get('valorImovel')?.errors?.['required']">Informe o valor do imóvel</span>
-          <span *ngIf="form.get('valorImovel')?.errors?.['min']">O valor mínimo é R$ 84.000,00.</span>
+          <span *ngIf="form.get('valorImovel')?.errors?.['min']">O valor mínimo é R$ {{valorMinimoImovel | currency:'BRL'}}</span>
         </div>
       </div>
 
@@ -151,12 +151,8 @@
       </div>
     </div>
 
-<<<<<<< HEAD
-    <div *ngIf="permiteLiquidacaoSimultanea()" class="alert alert-info d-flex align-items-center" role="alert" id="obs1">
-=======
     <div *ngIf="permiteLiquidacaoSimultanea()" class="alert alert-info d-flex align-items-center" role="alert"
       id="obs1">
->>>>>>> calculadora-egi
       <i class="fa-solid fa-circle-question me-2"></i>
       <div class="text-start m-3">O que é a Liquidação Simultânea?<br />
         A Liquidação Simultânea permite que você use parte do seu novo crédito para quitar dívidas atuais, garantindo a

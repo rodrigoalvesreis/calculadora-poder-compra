@@ -57,10 +57,10 @@ export const environment = {
   ],
  },
 
-  // Configuração Centralizada da Calculadora EGI
+//Configuração Centralizada da Calculadora EGI
 egiConfig: {
     limites: {
-      valorMinimoImovel: 50000,
+      valorMinimoImovel: 84000,
       pontoCorteTaxa: 100000,
       percentualMaximoLtv: 0.60,
       percentualMaximoRenda: 0.30,
@@ -70,16 +70,17 @@ egiConfig: {
       quitado: {
         prazoAnos: 20, 
         taxaAteCorte: 0.2213,
-        taxaAcimaCorte: 17.46
+        taxaAcimaCorte: 0.1746
       },
       financiado: {
         prazoAnos: 30, 
         taxaAteCorte: 0.20983,
-        taxaAcimaCorte: 17.042
+        taxaAcimaCorte: 0.17042
       },
       liquidacao: {
         prazoAnos: 20, 
-        taxaAcimaCorte: 0.1512
+        taxaAcimaCorte: 0.1512,
+        valorMinimoCredito: 100000
       }
     }
   }

@@ -15,7 +15,8 @@ export class CalculadoraEgiFormComponent implements OnInit {
   liquidacaoSimultanea = false;
 
   valorMinimoLiquidacao = environment.egiConfig.cenarios.liquidacao.valorMinimoCredito;
-
+  valorMinimoImovel = environment.egiConfig.limites.valorMinimoImovel;
+  
   constructor(
     private egiService: EgiCalculatorService,
     private fb: FormBuilder
@@ -23,7 +24,7 @@ export class CalculadoraEgiFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      valorImovel: [null, [Validators.required, Validators.min(84000)]],
+      valorImovel: [null, [Validators.required, Validators.min(this.valorMinimoImovel)]],
       valorRenda: [null, [Validators.required, Validators.min(100)]],
       saldoDevedor: [null, [Validators.min(0)]],
     });
