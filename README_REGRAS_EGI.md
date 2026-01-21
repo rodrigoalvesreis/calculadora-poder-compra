@@ -22,8 +22,8 @@ As taxas de juros são definidas pelo cenário do imóvel e pelo **Ponto de Cort
 | Cenário | Condição | Prazo | Taxa (Garantia ≤ 100k) | Taxa (Garantia > 100k) |
 | :--- | :--- | :--- | :--- | :--- |
 | **Quitado** | Saldo Devedor = 0 | 20 Anos | 22.13% a.a. | 17.46% a.a. |
-| **Estensão** | Saldo Devedor > 0 | 30 Anos | 20.983% a.a. | 17.042% a.a. |
-| **Liquidação** | Opção Selecionada | 20 a 30 Anos (se liquidaçao + estensão) | *Não Permitido* | 15.12% a.a. |
+| **Extensão** | Saldo Devedor > 0 | 30 Anos | 20.983% a.a. | 17.042% a.a. |
+| **Liquidação** | Opção Selecionada | 20 a 30 Anos (se liquidaçao + extensão) | *Não Permitido* | 15.12% a.a. |
 
 > **Importante:** O cenário de **Liquidação Simultânea** oferece a taxa mais atrativa (15.12% a.a.), mas possui uma trava de segurança que exige uma garantia mínima superior a R$ 100.000,00.
 
