@@ -10,7 +10,8 @@
         </div>
         <div class="text-danger small" *ngIf="form.get('valorImovel')?.invalid && form.get('valorImovel')?.touched">
           <span *ngIf="form.get('valorImovel')?.errors?.['required']">Informe o valor do imóvel</span>
-          <span *ngIf="form.get('valorImovel')?.errors?.['min']">O valor mínimo é R$ {{valorMinimoImovel | currency:'BRL'}}</span>
+          <span *ngIf="form.get('valorImovel')?.errors?.['min']">O valor mínimo é R$ {{valorMinimoImovel |
+            currency:'BRL'}}</span>
         </div>
       </div>
 
@@ -76,7 +77,12 @@
           </h6>
 
           <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
-            <span class="text-muted fw-bold">Valor da Garantia</span>
+            <div class="text-muted fw-bold text-start">LTV<br />
+              <small class="text-secondary fw-normal">
+                LTV (Loan to Value) significa Relação Financiamento/Valor do Imóvel.
+                Mostra o quanto do valor do imóvel será financiado pelo banco.
+              </small>
+            </div>
             <span>{{ resultado.valorMaximoEGI | currency:'BRL' }}</span>
           </div>
 

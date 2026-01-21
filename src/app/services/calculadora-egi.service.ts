@@ -94,7 +94,7 @@ export class EgiCalculatorService {
 
     // 1. Definição de Cenário e Enquadramento de Taxas
     if (liquidacaoSimultanea) {
-      prazoAnos = cenarios.liquidacao.prazoAnos;
+      prazoAnos = saldoDevedor > 0 ? cenarios.financiado.prazoAnos : cenarios.liquidacao.prazoAnos;
       taxaAnual = cenarios.liquidacao.taxaAcimaCorte;
       
       if (estaAbaixoCorteEGI) {
