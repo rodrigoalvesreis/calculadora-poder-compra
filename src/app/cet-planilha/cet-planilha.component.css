@@ -1,0 +1,38 @@
+.cet-planilha {
+  margin-top: 20px;
+  padding: 15px;
+  background: #eef6ff;
+  border: 1px solid #cce0ff;
+  border-radius: 4px;
+}
+
+.cet-planilha h3 {
+  margin: 15px 0 10px;
+  color: #0078d4;
+}
+
+.cet-planilha table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.cet-planilha th, .cet-planilha td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  text-align: right;
+}
+
+.cet-planilha th {
+  text-align: left;
+  background: #f0f8ff;
+}
+
+.resumo {
+  margin-top: 15px;
+  font-size: 0.95rem;
+}
+
+.resumo p {
+  margin: 5px 0;
+}

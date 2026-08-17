@@ -1,0 +1,23 @@
+<form [formGroup]="form" (ngSubmit)="calcular()">
+  <div class="mb-3">
+    <label>Valor do Terreno</label>
+    <input type="number" class="form-control" formControlName="valorTerreno">
+  </div>
+  <div class="mb-3">
+    <label>Valor da Obra</label>
+    <input type="number" class="form-control" formControlName="valorObra">
+  </div>
+  <div class="mb-3">
+    <label>Prazo da Obra (meses)</label>
+    <input type="number" class="form-control" formControlName="prazoObra">
+  </div>
+  <div class="mb-3">
+    <label>Percentual já realizado (%)</label>
+    <input type="number" class="form-control" formControlName="percentualExecutado">
+  </div>
+  <button type="submit" class="btn btn-primary">Calcular</button>
+</form>
+
+<div *ngIf="resultado">
+  <pre>{{ resultado | json }}</pre>
+</div>

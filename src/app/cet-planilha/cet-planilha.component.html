@@ -1,0 +1,41 @@
+<div class="cet-planilha" *ngIf="dadosCET">
+  <!-- Fase de Obras -->
+  <h3>Resultado CET - Fase de Obras</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Mês</th>
+        <th>Valor Liberado Acumulado</th>
+        <th>Valor da Parcela (juros)</th>
+        <th>Valor de Amortização</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let parcela of dadosCET.faseObras">
+        <td>{{ parcela.mes }}</td>
+        <td>{{ parcela.valorLiberadoAcumulado | currency:'BRL' }}</td>
+        <td>{{ parcela.valorParcela | currency:'BRL' }}</td>
+        <td>{{ parcela.valorAmortizacao | currency:'BRL' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Fase de Amortização -->
+  <h3>Resultado CET - Fase de Amortização</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Mês</th>
+        <th>Valor da Parcela</th>
+        <th>Valor de Amortização</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let parcela of dadosCET.faseAmortizacao">
+        <td>{{ parcela.mes }}</td>
+        <td>{{ parcela.valorParcela | currency:'BRL' }}</td>
+        <td>{{ parcela.valorAmortizacao | currency:'BRL' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

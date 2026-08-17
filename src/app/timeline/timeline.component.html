@@ -1,0 +1,14 @@
+<div class="timeline-container">
+  <h3>Linha do tempo</h3>
+
+  <!-- Linha gráfica horizontal -->
+  <div class="timeline-bar">
+    <div *ngFor="let etapa of etapas"
+         class="timeline-point"
+         [ngClass]="etapa.fase.toLowerCase()">
+      <span class="label">{{ etapa.etapa }}</span>
+      <span class="mes">Mês {{ etapa.mes }}</span>
+      <span class="data">{{ etapa.data | date:'dd/MM/yyyy' }}</span>
+    </div>
+  </div>
+</div>

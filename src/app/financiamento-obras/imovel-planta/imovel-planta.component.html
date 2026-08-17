@@ -1,0 +1,16 @@
+<form [formGroup]="form" (ngSubmit)="calcular()">
+  <div class="mb-3">
+    <label>Valor do Imóvel</label>
+    <input type="number" class="form-control" formControlName="valorImovel">
+  </div>
+  <div class="mb-3">
+    <label>Prazo da Obra (meses)</label>
+    <input type="number" class="form-control" formControlName="prazoObra">
+  </div>
+  <div class="mb-3">
+    <label>Percentual já realizado (%)</label>
+    <input type="number" class="form-control" formControlName="percentualExecutado">
+  </div>
+  <button type="submit" class="btn btn-primary">Calcular</button>
+</form>
+
