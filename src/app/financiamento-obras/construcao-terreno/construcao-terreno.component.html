@@ -40,6 +40,10 @@
 
         <div class="form-actions">
             <button type="submit" [disabled]="!financiamentoForm.valid">Calcular</button>
+            <!-- Botão para exibir a planilha -->
+            <button type="button" *ngIf="resultadoCalculo" (click)="mostrarPlanilha = !mostrarPlanilha" class="btn-planilha">
+                Planilha CET
+            </button>
         </div>
     </form>
 
@@ -49,8 +53,8 @@
 
         <!-- Resumo -->
         <div class="resumo">
-            <p><strong>Custo Total da Obra:</strong> {{ resultadoCalculo.custoTotalObra | currency:'BRL' }}</p>
-            <p><strong>Custo Total da Amortização:</strong> {{ resultadoCalculo.custoTotalAmortizacao | currency:'BRL'
+            <p><strong>Custo Total fase de Obra:</strong> {{ resultadoCalculo.custoTotalObra | currency:'BRL' }}</p>
+            <p><strong>Custo Total fase de Amortização:</strong> {{ resultadoCalculo.custoTotalAmortizacao | currency:'BRL'
                 }}</p>
             <p><strong>CET Efetivo:</strong> {{ resultadoCalculo.cetEfetivo | percent:'1.2-2' }}</p>
             <p><strong>Taxa de Juros:</strong> {{ resultadoCalculo.taxaJuros | percent:'1.2-2' }}</p>
@@ -58,10 +62,7 @@
         <!-- Apenas o gráfico -->
         <app-timeline [etapas]="resultadoCalculo.timeline"></app-timeline>
 
-        <!-- Botão para exibir a planilha -->
-        <button (click)="mostrarPlanilha = !mostrarPlanilha" class="btn-planilha">
-            Planilha CET
-        </button>
+      
 
         <!-- Planilha só aparece se mostrarPlanilha for true -->
         <div *ngIf="mostrarPlanilha">

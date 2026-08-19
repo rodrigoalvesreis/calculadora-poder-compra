@@ -33,6 +33,10 @@ label {
   margin-bottom: 5px;
 }
 
+input{
+  text-align: right;
+}
+
 input, select {
   padding: 8px;
   border: 1px solid #ccc;
@@ -54,6 +58,11 @@ button {
   border-radius: 4px;
   font-weight: bold;
   cursor: pointer;
+}
+.form-actions{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
 .form-actions button,

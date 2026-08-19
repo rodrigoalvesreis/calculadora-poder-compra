@@ -27,8 +27,15 @@ export class FinanciamentoObrasService {
     prazoTotal: number,
     sistema: 'PRICE' | 'SAC'
   ) {
-    // taxa de juros definida no environment (exemplo: 0.0723 = 7,23% ao mês)
-    const taxaJurosMensal = 0.0723;
+
+    // retirar o percentual executado
+    valorObra -= valorObra * (percentualExecutado/100);
+
+    //financia até 80% do valor da obra
+    valorObra = valorObra * 0.8;
+    
+    // taxa de juros definida no environment (exemplo: 0.0723 = 0,00584 ao mês)
+    const taxaJurosMensal = 0.00584;
 
     // --- Fase de Obras ---
     const faseObras: Parcela[] = [];
@@ -105,8 +112,8 @@ export class FinanciamentoObrasService {
       faseAmortizacao,
       custoTotalObra,
       custoTotalAmortizacao,
-      cetEfetivo: taxaJurosMensal,
-      taxaJuros: taxaJurosMensal,
+      cetEfetivo: 0.0723,
+      taxaJuros: 0.0723,
       timeline
     };
   }
