@@ -27,6 +27,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ConstrucaoTerrenoComponent } from './financiamento-obras/construcao-terreno/construcao-terreno.component';
 import { TimelineComponent } from './timeline/timeline.component';
 import { CetPlanilhaComponent } from './cet-planilha/cet-planilha.component';
+import { TerrenoConstrucaoComponent } from './financiamento-obras/terreno-construcao/terreno-construcao.component';
 
 registerLocaleData(localePt);
 
@@ -43,6 +44,7 @@ registerLocaleData(localePt);
     // Componentes Financiamento com Fase de Obras
     FinanciamentoObrasComponent,
     ConstrucaoTerrenoComponent,
+    TerrenoConstrucaoComponent,
     ImovelPlantaComponent,
     TimelineComponent,
     CetPlanilhaComponent

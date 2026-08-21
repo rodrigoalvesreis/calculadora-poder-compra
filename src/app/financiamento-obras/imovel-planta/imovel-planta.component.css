@@ -1,0 +1,114 @@
+/* Layout geral */
+.calculadora {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Grid do formulário */
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full-width {
+  flex: 100%;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input{
+  text-align: right;
+}
+
+input, select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Informações auxiliares */
+.form-info {
+  background-color: #f3f3f3;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Botões */
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.form-actions{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.form-actions button,
+.btn-planilha {
+  background-color: #0078d4; /* azul padrão */
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.form-actions button:hover,
+.btn-planilha:hover {
+  background-color: #005a9e;
+}
+
+/* Tabelas da planilha CET */
+.cet-planilha table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.cet-planilha th, .cet-planilha td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: right;
+}
+
+.cet-planilha th {
+  background-color: #0078d4;
+  color: #fff;
+  text-align: center;
+}
+
+.cet-planilha td:first-child {
+  text-align: center;
+}
+
+/* Resumo */
+.resumo {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f3f3f3;
+  border-radius: 4px;
+}
+
+.resumo p {
+  margin: 5px 0;
+  font-size: 14px;
+}

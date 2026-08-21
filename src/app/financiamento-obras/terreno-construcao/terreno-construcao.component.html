@@ -1,23 +1,79 @@
-<form [formGroup]="form" (ngSubmit)="calcular()">
-  <div class="mb-3">
-    <label>Valor do Terreno</label>
-    <input type="number" class="form-control" formControlName="valorTerreno">
-  </div>
-  <div class="mb-3">
-    <label>Valor da Obra</label>
-    <input type="number" class="form-control" formControlName="valorObra">
-  </div>
-  <div class="mb-3">
-    <label>Prazo da Obra (meses)</label>
-    <input type="number" class="form-control" formControlName="prazoObra">
-  </div>
-  <div class="mb-3">
-    <label>Percentual já realizado (%)</label>
-    <input type="number" class="form-control" formControlName="percentualExecutado">
-  </div>
-  <button type="submit" class="btn btn-primary">Calcular</button>
-</form>
+<div class="calculadora">
+    <!-- Formulário -->
+    <form [formGroup]="financiamentoForm" (ngSubmit)="onSubmit()" class="form-grid">
 
-<div *ngIf="resultado">
-  <pre>{{ resultado | json }}</pre>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="valorTerreno">Valor do Terreno:</label>
+                <input id="valorTerreno" type="text" class="moeda" (input)="formatarMoeda($event)"
+                    placeholder="Informe o valor do terreno">
+            </div>
+
+            <div class="form-group">
+                <label for="valorObra">Valor da Obra:</label>
+                <input id="valorObra" type="text" class="moeda" (input)="formatarMoeda($event)"
+                    placeholder="Informe o valor da obra">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="prazoObra">Prazo da Obra (meses):</label>
+                <input id="prazoObra" type="number" formControlName="prazoObra" placeholder="Entre 4 e 12 meses">
+            </div>
+            <div class="form-group">
+                <label for="percentualExecutado">Percentual Executado (%):</label>
+                <input id="percentualExecutado" type="number" formControlName="percentualExecutado"
+                    placeholder="0 a 100%">
+            </div>
+
+            <div class="form-group">
+                <label for="prazoTotal">Prazo Total (meses):</label>
+                <input id="prazoTotal" type="number" formControlName="prazoTotal" placeholder="Entre 88 e 132 meses">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group full-width">
+                <label for="sistema">Sistema de Amortização:</label>
+                <select id="sistema" formControlName="sistema">
+                    <option value="PRICE">PRICE (parcelas iguais)</option>
+                    <option value="SAC">SAC (parcelas decrescentes)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" [disabled]="!financiamentoForm.valid">Calcular</button>
+            <!-- Botão para exibir a planilha -->
+            <button type="button" *ngIf="resultadoCalculo" (click)="mostrarPlanilha = !mostrarPlanilha"
+                class="btn-planilha">
+                Planilha CET
+            </button>
+        </div>
+    </form>
+
+
+    <!-- Linha do tempo -->
+    <div *ngIf="resultadoCalculo">
+
+        <!-- Resumo -->
+        <div class="resumo">
+            <p><strong>Custo Total fase de Obra:</strong> {{ resultadoCalculo.custoTotalObra | currency:'BRL' }}</p>
+            <p><strong>Custo Total fase de Amortização:</strong> {{ resultadoCalculo.custoTotalAmortizacao |
+                currency:'BRL'
+                }}</p>
+            <p><strong>CET Efetivo:</strong> {{ resultadoCalculo.cetEfetivo | percent:'1.2-2' }}</p>
+            <p><strong>Taxa de Juros:</strong> {{ resultadoCalculo.taxaJuros | percent:'1.2-2' }}</p>
+        </div>
+        <!-- Apenas o gráfico -->
+        <app-timeline [etapas]="resultadoCalculo.timeline"></app-timeline>
+
+
+
+        <!-- Planilha só aparece se mostrarPlanilha for true -->
+        <div *ngIf="mostrarPlanilha">
+            <app-cet-planilha [dadosCET]="resultadoCalculo"></app-cet-planilha>
+        </div>
+    </div>
 </div>
