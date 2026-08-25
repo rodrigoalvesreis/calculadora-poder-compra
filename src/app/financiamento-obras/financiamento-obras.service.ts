@@ -21,6 +21,7 @@ export interface TimelineEtapa {
 export class FinanciamentoObrasService {
 
   calcularConstrucaoTerreno(
+    valorTerreno: number,
     valorObra: number,
     prazoObra: number,
     percentualExecutado: number,
@@ -33,8 +34,9 @@ export class FinanciamentoObrasService {
 
     //financia até 80% do valor da obra
     valorObra = valorObra * 0.8;
+    valorTerreno = valorTerreno * 0.8;
     
-    // taxa de juros definida no environment (exemplo: 0.0723 = 0,00584 ao mês)
+    // exemplo: 0.0723 = 0,00584 ao mês
     const taxaJurosMensal = 0.00584;
 
     // --- Fase de Obras ---
@@ -42,8 +44,17 @@ export class FinanciamentoObrasService {
     let acumuladoAnterior = 0;
     for (let i = 1; i <= prazoObra; i++) {
       const percentualAcumulado = i / prazoObra;
-      const valorAcumulado = valorObra * percentualAcumulado;
-      const valorLiberadoMes = valorAcumulado - acumuladoAnterior;
+      let valorAcumulado = valorObra * percentualAcumulado;
+      let valorLiberadoMes = valorAcumulado - acumuladoAnterior;
+      
+      //valor do terreno é liberado na primeira parcela
+      if(i == 1 && valorTerreno > 0){
+        valorAcumulado = valorTerreno;
+      }
+      else{
+        valorAcumulado += valorTerreno;
+      }             
+
       acumuladoAnterior = valorAcumulado;
 
       // parcela = saldo acumulado * taxa mensal

@@ -56,7 +56,8 @@ export class TerrenoConstrucaoComponent implements OnInit {
     if (this.financiamentoForm.valid) {
       const dados = this.financiamentoForm.value;
       this.resultadoCalculo = this.financiamentoService.calcularConstrucaoTerreno(
-        dados.valorObra + dados.valorTerreno,
+        dados.valorTerreno,
+        dados.valorObra,
         dados.prazoObra,
         dados.percentualExecutado,
         dados.prazoTotal,

@@ -53,6 +53,7 @@ export class ImovelPlantaComponent implements OnInit {
     if (this.financiamentoForm.valid) {
       const dados = this.financiamentoForm.value;
       this.resultadoCalculo = this.financiamentoService.calcularConstrucaoTerreno(
+        0,
         dados.valorImovel,
         dados.prazoObra,
         dados.percentualExecutado,
