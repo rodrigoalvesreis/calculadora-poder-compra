@@ -44,12 +44,26 @@ export class ConstrucaoTerrenoComponent implements OnInit {
     this.financiamentoForm.get('sistema')?.valueChanges.subscribe((sistema: 'PRICE' | 'SAC') => {
       this.atualizarValidatorsValor(sistema);
       this.atualizarValidatorsPrazo(sistema);
+      this.limparResultado();
     });
 
     this.financiamentoForm.get('prazoObra')?.valueChanges.subscribe(() => {
       const sistema = this.financiamentoForm.get('sistema')?.value ?? 'PRICE';
       this.atualizarValidatorsPrazo(sistema);
+      this.limparResultado();
     });
+
+    Object.keys(this.financiamentoForm.controls).forEach(key => {
+      this.financiamentoForm.get(key)?.valueChanges.subscribe(() => {
+        this.limparResultado();
+      });
+    });
+  }
+
+  private limparResultado(): void {
+    this.resultadoCalculo = undefined as any;
+    this.mostrarPlanilha = false;
+    this.errosValidacao = [];
   }
 
   private atualizarValidatorsValor(sistema: 'PRICE' | 'SAC'): void {
