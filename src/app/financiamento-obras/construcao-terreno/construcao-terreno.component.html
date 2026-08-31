@@ -11,6 +11,27 @@
             </div>
 
             <div class="form-group">
+                <label for="dataNascimento">Data de Nascimento:</label>
+                <input id="dataNascimento" type="date" formControlName="dataNascimento"
+                    [ngClass]="{'is-invalid': hasError('dataNascimento') || financiamentoForm.hasError('idadeForaDoIntervaloPermitido') || financiamentoForm.hasError('idadeMaiorQuePermitida')}">
+                <div class="field-error" *ngIf="financiamentoForm.hasError('idadeForaDoIntervaloPermitido')">
+                    A idade do cliente deve estar entre 18 e 79 anos.
+                </div>
+                <div class="field-error" *ngIf="financiamentoForm.hasError('idadeMaiorQuePermitida')">
+                    O prazo foi reduzido para manter a idade máxima de 79 anos no fim do contrato.
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="valorAvaliacaoEngenharia">Valor da Avaliação de Engenharia:</label>
+                <input id="valorAvaliacaoEngenharia" type="text" class="moeda" formControlName="valorAvaliacaoEngenharia" (input)="formatarMoedaAvaliacao($event)"
+                    [ngClass]="{'is-invalid': hasError('valorAvaliacaoEngenharia')}"
+                    placeholder="R$ 0,00">
+            </div>
+
+            <div class="form-group">
                 <label for="prazoObra">Prazo da Obra (meses) - Entre 4 e 12:</label>
                 <input id="prazoObra" type="number" formControlName="prazoObra" placeholder="4 a 12 meses"
                     [ngClass]="{'is-invalid': hasError('prazoObra')}">
