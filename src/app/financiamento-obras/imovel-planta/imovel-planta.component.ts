@@ -104,18 +104,19 @@ export class ImovelPlantaComponent implements OnInit {
   }
 
   formatarMoeda(event: any) {
-    let valor = event.target.value;
-    valor = valor.replace(/\D/g, '');
+    const valorTexto = event.target.value ?? '';
+    const apenasDigitos = valorTexto.replace(/\D/g, '');
 
-    if (valor !== '') {
-      const valorNumerico = Number(valor);
-      const valorFormatado = this.currencyPipe.transform(valorNumerico, 'BRL', 'symbol', '1.2-2');
-      event.target.value = valorFormatado ?? '';
-      this.financiamentoForm.get('valorImovel')?.setValue(valorNumerico);
-    } else {
+    if (apenasDigitos === '') {
       event.target.value = '';
       this.financiamentoForm.get('valorImovel')?.setValue(null);
+      return;
     }
+
+    const valorNumerico = Number(apenasDigitos);
+    const valorFormatado = this.currencyPipe.transform(valorNumerico, 'BRL', 'symbol', '1.2-2', 'pt-BR');
+    event.target.value = valorFormatado ?? '';
+    this.financiamentoForm.get('valorImovel')?.setValue(valorNumerico);
   }
 
   /**
