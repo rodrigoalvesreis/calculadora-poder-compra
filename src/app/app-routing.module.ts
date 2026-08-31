@@ -16,10 +16,10 @@ const routes: Routes = [
   { path: 'financiamento-obras', component: FinanciamentoObrasComponent },
 
   // Rota Padrão: Agora aponta para poder-compra
-  { path: '', redirectTo: '/poder-compra', pathMatch: 'full' },
+  { path: '', redirectTo: '/financiamento-obras', pathMatch: 'full' },
 
   // Fallback para rotas inexistentes
-  { path: '**', redirectTo: '/poder-compra' }
+  { path: '**', redirectTo: '/financiamento-obras' }
 ];
 
 @NgModule({
