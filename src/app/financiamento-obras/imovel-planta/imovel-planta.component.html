@@ -4,27 +4,31 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label for="valorImovel">Valor do Imóvel:</label>
-                <input id="valorImovel" type="text" class="moeda" (input)="formatarMoeda($event)"
-                    placeholder="Informe o valor do imóvel">
+                <label for="valorImovel">Valor do Imóvel (min: {{ valorImovelMin | currency:'BRL':'symbol':'1.0-0' }}, máx: {{ valorImovelMax | currency:'BRL':'symbol':'1.0-0' }}):</label>
+                <input id="valorImovel" type="text" class="moeda" formControlName="valorImovel" (input)="formatarMoeda($event)"
+                    [ngClass]="{'is-invalid': hasError('valorImovel')}"
+                    [placeholder]="'Entre ' + (valorImovelMin | currency:'BRL':'symbol':'1.0-0') + ' e ' + (valorImovelMax | currency:'BRL':'symbol':'1.0-0')">
             </div>
 
             <div class="form-group">
-                <label for="prazoObra">Prazo da Obra (meses):</label>
-                <input id="prazoObra" type="number" formControlName="prazoObra" placeholder="Entre 4 e 36 meses">
+                <label for="prazoObra">Prazo da Obra (meses) - Entre 4 e 36:</label>
+                <input id="prazoObra" type="number" formControlName="prazoObra" placeholder="4 a 36 meses"
+                    [ngClass]="{'is-invalid': hasError('prazoObra')}">
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group">
-                <label for="percentualExecutado">Percentual Executado (%):</label>
+                <label for="percentualExecutado">Percentual Executado (%) - De 0% a 100%:</label>
                 <input id="percentualExecutado" type="number" formControlName="percentualExecutado"
-                    placeholder="0 a 100%">
+                    placeholder="0 a 100%"
+                    [ngClass]="{'is-invalid': hasError('percentualExecutado')}">
             </div>
 
             <div class="form-group">
-                <label for="prazoFinanciamento">Prazo do financiamento (meses):</label>
-                <input id="prazoFinanciamento" type="number" formControlName="prazoFinanciamento" placeholder="Entre 84 a 420 meses">
+                <label for="prazoFinanciamento">Prazo do Financiamento (meses) - Min: {{ prazoFinanciamentoMin }}, Máx: {{ prazoFinanciamentoMax }}:</label>
+                <input id="prazoFinanciamento" type="number" formControlName="prazoFinanciamento" [ngClass]="{'is-invalid': hasError('prazoFinanciamento')}"
+                    [placeholder]="'Entre ' + prazoFinanciamentoMin + ' e ' + prazoFinanciamentoMax + ' meses'">
             </div>
         </div>
 
@@ -47,6 +51,13 @@
         </div>
     </form>
 
+    <!-- Erros de Validação -->
+    <div *ngIf="errosValidacao.length > 0" class="alert alert-danger mt-3">
+        <strong>Erros de Validação:</strong>
+        <ul class="mb-0">
+            <li *ngFor="let erro of errosValidacao">{{ erro }}</li>
+        </ul>
+    </div>
 
     <!-- Linha do tempo -->
     <div *ngIf="resultadoCalculo">

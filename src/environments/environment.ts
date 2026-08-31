@@ -83,6 +83,55 @@ egiConfig: {
         valorMinimoCredito: 100000
       }
     }
+  },
+
+  // Configuração Parametrizada do Financiamento de Obras
+  financiamentoObrasConfig: {
+    imovelPlanta: {
+      taxaEfetiva: 0.1149, // 11,49% a.a
+      ltv: {
+        SAC: 0.80,
+        PRICE: 0.70
+      },
+      prazoAmortizacao: {
+        minimo: { SAC: 120, PRICE: 120 },
+        maximo: { SAC: 420, PRICE: 360 }
+      },
+      valorFinanciamento: {
+        minimo: 100000,
+        maximo: 2250000
+      }
+    },
+    construcaoTerreno: {
+      taxaEfetiva: 0.12, // 12% a.a
+      ltv: {
+        SAC: 0.80,
+        PRICE: 0.70
+      },
+      prazoAmortizacao: {
+        minimo: { SAC: 120, PRICE: 120 },
+        maximo: { SAC: 420, PRICE: 360 }
+      },
+      valorFinanciamento: {
+        minimo: 150000,
+        maximo: 2250000
+      }
+    },
+    terrenoConstrucao: {
+      taxaEfetiva: 0.12, // 12% a.a
+      ltv: {
+        SAC: 0.80,
+        PRICE: 0.70
+      },
+      prazoAmortizacao: {
+        minimo: { SAC: 120, PRICE: 120 },
+        maximo: { SAC: 420, PRICE: 360 }
+      },
+      valorFinanciamento: {
+        minimo: 150000,
+        maximo: 2250000
+      }
+    }
   }
 }
 
